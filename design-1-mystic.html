@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>月光之境 — 神秘療癒｜Mystic</title>
+  <style>
+    :root {
+      --bg: #0f0a1e;
+      --bg-2: #1a1230;
+      --ink: #f4ecd8;
+      --ink-soft: #b3a9c4;
+      --gold: #d4af6a;
+      --gold-deep: #c19443;
+      --violet: #8b6fc4;
+      --line: rgba(244, 236, 216, 0.1);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: "Cormorant Garamond", "Noto Serif TC", "Georgia", serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.7;
+      overflow-x: hidden;
+      position: relative;
+    }
+    body::before {
+      content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 0;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(139, 111, 196, 0.15), transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(212, 175, 106, 0.08), transparent 50%);
+    }
+    .stars {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background-image:
+        radial-gradient(2px 2px at 20px 30px, rgba(244, 236, 216, 0.5), transparent),
+        radial-gradient(1px 1px at 60px 100px, rgba(244, 236, 216, 0.4), transparent),
+        radial-gradient(1.5px 1.5px at 150px 80px, rgba(212, 175, 106, 0.6), transparent),
+        radial-gradient(1px 1px at 250px 200px, rgba(244, 236, 216, 0.3), transparent),
+        radial-gradient(2px 2px at 320px 50px, rgba(244, 236, 216, 0.5), transparent),
+        radial-gradient(1px 1px at 400px 150px, rgba(212, 175, 106, 0.5), transparent);
+      background-size: 500px 300px;
+      opacity: 0.6;
+    }
+    main, nav, footer { position: relative; z-index: 1; }
+    a { color: inherit; text-decoration: none; }
+
+    /* Nav */
+    .nav {
+      position: sticky; top: 0; z-index: 50;
+      background: rgba(15, 10, 30, 0.7);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--line);
+    }
+    .nav-inner {
+      max-width: 1200px; margin: 0 auto;
+      padding: 1.2rem 1.5rem;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .logo {
+      display: flex; align-items: center; gap: 0.8rem;
+      font-size: 1.3rem; letter-spacing: 0.25em;
+    }
+    .logo-mark {
+      width: 32px; height: 32px;
+      background: radial-gradient(circle at 35% 35%, var(--gold), var(--gold-deep));
+      border-radius: 50%;
+      box-shadow: 0 0 20px rgba(212, 175, 106, 0.4);
+      position: relative;
+    }
+    .logo-mark::after {
+      content: ''; position: absolute; inset: 4px;
+      background: var(--bg); border-radius: 50%;
+      box-shadow: inset -3px -3px 6px rgba(212, 175, 106, 0.4);
+    }
+    .nav-links { display: flex; gap: 2.5rem; font-size: 0.95rem; color: var(--ink-soft); letter-spacing: 0.1em; }
+    .nav-links a:hover { color: var(--gold); }
+    .nav-right { display: flex; align-items: center; gap: 1.2rem; }
+    .lang-switch {
+      display: flex; background: rgba(244, 236, 216, 0.06);
+      border: 1px solid var(--line); border-radius: 999px; padding: 3px;
+    }
+    .lang-btn {
+      padding: 0.35rem 0.9rem; border: none; background: transparent;
+      color: var(--ink-soft); cursor: pointer; font-family: inherit;
+      letter-spacing: 0.1em; border-radius: 999px; font-size: 0.82rem;
+      transition: all 0.25s;
+    }
+    .lang-btn.active { background: var(--gold); color: var(--bg); }
+    .nav-cta {
+      padding: 0.6rem 1.4rem; border: 1px solid var(--gold);
+      color: var(--gold); border-radius: 999px; font-size: 0.9rem;
+      letter-spacing: 0.1em; transition: all 0.25s;
+    }
+    .nav-cta:hover { background: var(--gold); color: var(--bg); }
+    @media (max-width: 768px) { .nav-links { display: none; } }
+
+    /* Hero */
+    .hero {
+      padding: 7rem 1.5rem 6rem; text-align: center;
+      position: relative;
+    }
+    .moon {
+      width: 180px; height: 180px; margin: 0 auto 3rem;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, #f4ecd8, #c19443 70%, #8b6fc4);
+      box-shadow:
+        0 0 60px rgba(212, 175, 106, 0.4),
+        inset -30px -30px 50px rgba(15, 10, 30, 0.6);
+      position: relative;
+      animation: float 6s ease-in-out infinite;
+    }
+    @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
+    .hero-tag {
+      display: inline-block; padding: 0.4rem 1.2rem;
+      border: 1px solid var(--line); border-radius: 999px;
+      color: var(--gold); font-size: 0.85rem;
+      letter-spacing: 0.3em; margin-bottom: 2rem;
+    }
+    .hero h1 {
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      font-weight: 400; letter-spacing: 0.05em;
+      line-height: 1.3; margin-bottom: 1.5rem;
+    }
+    .hero h1 em {
+      font-style: italic;
+      background: linear-gradient(135deg, var(--gold), var(--violet));
+      -webkit-background-clip: text; background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero-sub {
+      max-width: 600px; margin: 0 auto 2.5rem;
+      color: var(--ink-soft); font-size: 1.15rem; font-style: italic;
+    }
+    .hero-cta { display: inline-flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
+    .btn {
+      padding: 1rem 2.4rem; border-radius: 0; font-size: 0.95rem;
+      letter-spacing: 0.2em; transition: all 0.3s; cursor: pointer;
+      border: 1px solid var(--gold); font-family: inherit;
+    }
+    .btn-primary {
+      background: var(--gold); color: var(--bg);
+    }
+    .btn-primary:hover { background: transparent; color: var(--gold); }
+    .btn-ghost { background: transparent; color: var(--ink); border-color: var(--line); }
+    .btn-ghost:hover { border-color: var(--gold); color: var(--gold); }
+
+    /* Sections */
+    section { padding: 6rem 1.5rem; }
+    .container { max-width: 1200px; margin: 0 auto; }
+    .section-head { text-align: center; margin-bottom: 4rem; }
+    .section-eyebrow { color: var(--gold); letter-spacing: 0.4em; font-size: 0.8rem; margin-bottom: 1rem; }
+    .section-title { font-size: clamp(2rem, 4vw, 3rem); font-weight: 400; letter-spacing: 0.05em; }
+    .section-title em { font-style: italic; color: var(--gold); }
+    .section-desc { color: var(--ink-soft); margin-top: 1rem; max-width: 580px; margin-left: auto; margin-right: auto; }
+
+    /* Services */
+    .service-grid {
+      display: grid; gap: 1px;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      background: var(--line);
+      border: 1px solid var(--line);
+    }
+    .service-card {
+      background: var(--bg);
+      padding: 2.8rem 2rem; text-align: center;
+      transition: all 0.4s;
+      position: relative;
+    }
+    .service-card:hover { background: var(--bg-2); }
+    .service-icon {
+      font-size: 2.4rem; margin-bottom: 1.5rem;
+      display: inline-block;
+      filter: drop-shadow(0 0 12px rgba(212, 175, 106, 0.5));
+    }
+    .service-card h3 {
+      font-size: 1.5rem; font-weight: 400;
+      letter-spacing: 0.1em; margin-bottom: 1rem;
+    }
+    .service-card p { color: var(--ink-soft); font-size: 0.95rem; margin-bottom: 1.5rem; }
+    .service-meta {
+      display: flex; justify-content: center; gap: 1.5rem;
+      font-size: 0.85rem; color: var(--gold); letter-spacing: 0.1em;
+    }
+    .service-meta span:first-child::after {
+      content: '·'; margin-left: 1.5rem; color: var(--ink-soft);
+    }
+
+    /* Products */
+    .products-section { background: var(--bg-2); }
+    .product-grid {
+      display: grid; gap: 2rem;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    }
+    .product-card {
+      text-align: center; transition: all 0.3s;
+    }
+    .product-card:hover { transform: translateY(-6px); }
+    .product-img {
+      aspect-ratio: 1; margin-bottom: 1.5rem;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 4.5rem; position: relative;
+      border: 1px solid var(--line);
+    }
+    .product-img.c1 { background: radial-gradient(circle, rgba(212, 175, 106, 0.2), rgba(15, 10, 30, 0.8)); }
+    .product-img.c2 { background: radial-gradient(circle, rgba(139, 111, 196, 0.25), rgba(15, 10, 30, 0.8)); }
+    .product-img.c3 { background: radial-gradient(circle, rgba(180, 90, 110, 0.2), rgba(15, 10, 30, 0.8)); }
+    .product-img.c4 { background: radial-gradient(circle, rgba(106, 145, 180, 0.2), rgba(15, 10, 30, 0.8)); }
+    .product-badge {
+      position: absolute; top: 1rem; right: 1rem;
+      padding: 0.2rem 0.7rem; font-size: 0.7rem;
+      letter-spacing: 0.2em; color: var(--gold);
+      border: 1px solid var(--gold);
+    }
+    .product-cat { font-size: 0.75rem; letter-spacing: 0.3em; color: var(--ink-soft); margin-bottom: 0.5rem; }
+    .product-name { font-size: 1.1rem; margin-bottom: 0.8rem; letter-spacing: 0.05em; }
+    .product-price { color: var(--gold); letter-spacing: 0.1em; }
+
+    /* CTA */
+    .cta {
+      text-align: center;
+      padding: 6rem 1.5rem;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+    .cta h2 {
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 400; font-style: italic;
+      margin-bottom: 1.5rem; letter-spacing: 0.05em;
+    }
+    .cta p { color: var(--ink-soft); max-width: 500px; margin: 0 auto 2.5rem; }
+
+    /* Footer */
+    footer {
+      padding: 3rem 1.5rem;
+      text-align: center;
+      border-top: 1px solid var(--line);
+      color: var(--ink-soft); font-size: 0.85rem;
+      letter-spacing: 0.1em;
+    }
+  </style>
+</head>
+<body>
+  <div class="stars"></div>
+
+  <nav class="nav">
+    <div class="nav-inner">
+      <div class="logo">
+        <span class="logo-mark"></span>
+        <span data-i18n="brand">月光之境</span>
+      </div>
+      <div class="nav-links">
+        <a href="#services" data-i18n="nav.services">療癒</a>
+        <a href="#products" data-i18n="nav.products">選物</a>
+        <a href="#cta" data-i18n="nav.contact">預約</a>
+      </div>
+      <div class="nav-right">
+        <div class="lang-switch">
+          <button class="lang-btn active" data-lang="zh">中文</button>
+          <button class="lang-btn" data-lang="es">ES</button>
+        </div>
+        <a href="#cta" class="nav-cta" data-i18n="nav.cta">預約療程</a>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <header class="hero">
+      <div class="moon"></div>
+      <span class="hero-tag" data-i18n="hero.tag">☾ MYSTIC HEALING SPACE ☽</span>
+      <h1 data-i18n-html="hero.title">在月光下，<br>重新<em>認識自己</em></h1>
+      <p class="hero-sub" data-i18n="hero.sub">古老的智慧，當代的療癒。讓星辰與直覺，引領你回到生命的本質。</p>
+      <div class="hero-cta">
+        <a href="#services" class="btn btn-primary" data-i18n="hero.cta1">預約占星療癒</a>
+        <a href="#products" class="btn btn-ghost" data-i18n="hero.cta2">探索神秘選物</a>
+      </div>
+    </header>
+
+    <section id="services">
+      <div class="container">
+        <div class="section-head">
+          <div class="section-eyebrow">SERVICES</div>
+          <h2 class="section-title" data-i18n-html="services.title">療癒<em>儀式</em></h2>
+          <p class="section-desc" data-i18n="services.desc">穿越時空的古老智慧，為當代靈魂量身打造。</p>
+        </div>
+        <div class="service-grid">
+          <div class="service-card">
+            <div class="service-icon">☾</div>
+            <h3 data-i18n="s1.title">月相能量</h3>
+            <p data-i18n="s1.desc">順應月亮週期，校準你的內在節奏與能量場。</p>
+            <div class="service-meta"><span data-i18n="s1.price">NT$ 3,200</span><span data-i18n="s1.dur">75 分鐘</span></div>
+          </div>
+          <div class="service-card">
+            <div class="service-icon">✦</div>
+            <h3 data-i18n="s2.title">星盤解讀</h3>
+            <p data-i18n="s2.desc">解析你出生那一刻的星辰排列，看見靈魂的藍圖。</p>
+            <div class="service-meta"><span data-i18n="s2.price">NT$ 4,500</span><span data-i18n="s2.dur">90 分鐘</span></div>
+          </div>
+          <div class="service-card">
+            <div class="service-icon">⚭</div>
+            <h3 data-i18n="s3.title">塔羅諮詢</h3>
+            <p data-i18n="s3.desc">78 張牌，78 種可能。讓潛意識說它真正想說的話。</p>
+            <div class="service-meta"><span data-i18n="s3.price">NT$ 2,400</span><span data-i18n="s3.dur">60 分鐘</span></div>
+          </div>
+          <div class="service-card">
+            <div class="service-icon">◉</div>
+            <h3 data-i18n="s4.title">水晶療癒</h3>
+            <p data-i18n="s4.desc">以水晶頻率清理脈輪、修復能量裂痕。</p>
+            <div class="service-meta"><span data-i18n="s4.price">NT$ 3,800</span><span data-i18n="s4.dur">75 分鐘</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="products" class="products-section">
+      <div class="container">
+        <div class="section-head">
+          <div class="section-eyebrow">SHOP</div>
+          <h2 class="section-title" data-i18n-html="products.title">神秘<em>選物</em></h2>
+          <p class="section-desc" data-i18n="products.desc">將儀式感帶回家，把神聖時刻延伸到日常。</p>
+        </div>
+        <div class="product-grid">
+          <div class="product-card">
+            <div class="product-img c1">🌙<span class="product-badge">NEW</span></div>
+            <div class="product-cat">RITUAL</div>
+            <div class="product-name" data-i18n="p1.name">月光儀式蠟燭</div>
+            <div class="product-price">NT$ 1,280</div>
+          </div>
+          <div class="product-card">
+            <div class="product-img c2">💎</div>
+            <div class="product-cat">CRYSTAL</div>
+            <div class="product-name" data-i18n="p2.name">紫水晶魔法石</div>
+            <div class="product-price">NT$ 2,480</div>
+          </div>
+          <div class="product-card">
+            <div class="product-img c3">🎴<span class="product-badge">HOT</span></div>
+            <div class="product-cat">TAROT</div>
+            <div class="product-name" data-i18n="p3.name">夜之女神塔羅</div>
+            <div class="product-price">NT$ 1,880</div>
+          </div>
+          <div class="product-card">
+            <div class="product-img c4">⚱️</div>
+            <div class="product-cat">INCENSE</div>
+            <div class="product-name" data-i18n="p4.name">古典乳香線香</div>
+            <div class="product-price">NT$ 680</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta" id="cta">
+      <h2 data-i18n="cta.title">"當你準備好，宇宙就會回應。"</h2>
+      <p data-i18n="cta.desc">首次預約贈送專屬星盤解析手冊。</p>
+      <a href="#" class="btn btn-primary" data-i18n="cta.btn">開啟我的旅程</a>
+    </section>
+  </main>
+
+  <footer>
+    <p data-i18n="footer.copy">© 2026 月光之境 MOONHAVEN · ALL RIGHTS RESERVED</p>
+  </footer>
+
+  <script>
+    const i18n = {
+      zh: {
+        brand: "月光之境",
+        "nav.services": "療癒", "nav.products": "選物", "nav.contact": "預約", "nav.cta": "預約療程",
+        "hero.tag": "☾ MYSTIC HEALING SPACE ☽",
+        "hero.title": "在月光下，<br>重新<em>認識自己</em>",
+        "hero.sub": "古老的智慧，當代的療癒。讓星辰與直覺，引領你回到生命的本質。",
+        "hero.cta1": "預約占星療癒", "hero.cta2": "探索神秘選物",
+        "services.title": "療癒<em>儀式</em>",
+        "services.desc": "穿越時空的古老智慧，為當代靈魂量身打造。",
+        "s1.title": "月相能量", "s1.desc": "順應月亮週期，校準你的內在節奏與能量場。", "s1.price": "NT$ 3,200", "s1.dur": "75 分鐘",
+        "s2.title": "星盤解讀", "s2.desc": "解析你出生那一刻的星辰排列，看見靈魂的藍圖。", "s2.price": "NT$ 4,500", "s2.dur": "90 分鐘",
+        "s3.title": "塔羅諮詢", "s3.desc": "78 張牌，78 種可能。讓潛意識說它真正想說的話。", "s3.price": "NT$ 2,400", "s3.dur": "60 分鐘",
+        "s4.title": "水晶療癒", "s4.desc": "以水晶頻率清理脈輪、修復能量裂痕。", "s4.price": "NT$ 3,800", "s4.dur": "75 分鐘",
+        "products.title": "神秘<em>選物</em>",
+        "products.desc": "將儀式感帶回家，把神聖時刻延伸到日常。",
+        "p1.name": "月光儀式蠟燭", "p2.name": "紫水晶魔法石", "p3.name": "夜之女神塔羅", "p4.name": "古典乳香線香",
+        "cta.title": "「當你準備好，宇宙就會回應。」",
+        "cta.desc": "首次預約贈送專屬星盤解析手冊。",
+        "cta.btn": "開啟我的旅程",
+        "footer.copy": "© 2026 月光之境 MOONHAVEN · 版權所有"
+      },
+      es: {
+        brand: "Luz de Luna",
+        "nav.services": "Servicios", "nav.products": "Tienda", "nav.contact": "Reservar", "nav.cta": "Reservar sesión",
+        "hero.tag": "☾ ESPACIO DE SANACIÓN MÍSTICA ☽",
+        "hero.title": "Bajo la luna,<br>reencuéntrate <em>contigo misma</em>",
+        "hero.sub": "Sabiduría ancestral, sanación contemporánea. Deja que las estrellas y tu intuición te guíen de vuelta a tu esencia.",
+        "hero.cta1": "Reservar sesión astral", "hero.cta2": "Explorar la tienda",
+        "services.title": "Rituales de <em>sanación</em>",
+        "services.desc": "Sabiduría ancestral, hecha a la medida del alma contemporánea.",
+        "s1.title": "Energía lunar", "s1.desc": "Sincroniza tu ritmo interior y campo energético con los ciclos de la luna.", "s1.price": "Desde 110 €", "s1.dur": "75 min",
+        "s2.title": "Carta astral", "s2.desc": "Descifra el cielo del momento en que naciste y descubre el plano de tu alma.", "s2.price": "Desde 150 €", "s2.dur": "90 min",
+        "s3.title": "Lectura de tarot", "s3.desc": "78 cartas, infinitas posibilidades. Deja que tu inconsciente hable.", "s3.price": "Desde 80 €", "s3.dur": "60 min",
+        "s4.title": "Sanación con cristales", "s4.desc": "Limpia tus chakras y repara fisuras energéticas con frecuencias minerales.", "s4.price": "Desde 130 €", "s4.dur": "75 min",
+        "products.title": "Objetos <em>místicos</em>",
+        "products.desc": "Lleva el ritual a casa, prolonga lo sagrado en tu día a día.",
+        "p1.name": "Vela ritual de luna", "p2.name": "Amatista mágica", "p3.name": "Tarot Diosa de la Noche", "p4.name": "Incienso de mirra clásico",
+        "cta.title": "«Cuando estés lista, el universo responde.»",
+        "cta.desc": "Tu primera reserva incluye un cuadernillo personal de carta astral.",
+        "cta.btn": "Comenzar mi viaje",
+        "footer.copy": "© 2026 Luz de Luna · Todos los derechos reservados"
+      }
+    };
+    function applyLang(lang) {
+      const dict = i18n[lang]; if (!dict) return;
+      document.documentElement.lang = lang === "zh" ? "zh-Hant" : "es";
+      document.querySelectorAll("[data-i18n]").forEach(el => { const k = el.getAttribute("data-i18n"); if (dict[k] !== undefined) el.textContent = dict[k]; });
+      document.querySelectorAll("[data-i18n-html]").forEach(el => { const k = el.getAttribute("data-i18n-html"); if (dict[k] !== undefined) el.innerHTML = dict[k]; });
+      document.querySelectorAll(".lang-btn").forEach(b => b.classList.toggle("active", b.dataset.lang === lang));
+      try { localStorage.setItem("preferredLang", lang); } catch (e) {}
+    }
+    document.querySelectorAll(".lang-btn").forEach(b => b.addEventListener("click", () => applyLang(b.dataset.lang)));
+    let saved; try { saved = localStorage.getItem("preferredLang"); } catch (e) {}
+    applyLang(saved || ((navigator.language || "").toLowerCase().startsWith("es") ? "es" : "zh"));
+  </script>
+</body>
+</html>

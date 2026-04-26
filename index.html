@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>我的第一個網頁</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, "PingFang TC", "Microsoft JhengHei", sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: #fff;
+    }
+    .card {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 16px;
+      padding: 3rem 2.5rem;
+      max-width: 480px;
+      width: 90%;
+      text-align: center;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    }
+    h1 { font-size: 2.2rem; margin-bottom: 1rem; }
+    p { font-size: 1.05rem; line-height: 1.7; margin-bottom: 1.5rem; opacity: 0.9; }
+    button {
+      background: #fff;
+      color: #764ba2;
+      border: none;
+      padding: 0.75rem 2rem;
+      font-size: 1rem;
+      font-weight: 600;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <h1>哈囉，世界！</h1>
+    <p>歡迎來到我的第一個網頁。這是用 Claude Code 建立的簡單範例，可以從這裡開始你的開發旅程。</p>
+    <button onclick="alert('點擊成功！')">點我試試</button>
+  </main>
+</body>
+</html>

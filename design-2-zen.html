@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>無相 — 禪意身心靈｜Zen</title>
+  <style>
+    :root {
+      --bg: #fafaf7;
+      --paper: #ffffff;
+      --ink: #1a1a1a;
+      --ink-soft: #6a6a6a;
+      --ink-faint: #c8c8c5;
+      --vermilion: #c1392b;
+      --line: rgba(26, 26, 26, 0.08);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: "Noto Serif TC", "Songti TC", "STSong", "Georgia", serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.9;
+    }
+    a { color: inherit; text-decoration: none; }
+
+    /* Nav */
+    .nav {
+      position: sticky; top: 0; z-index: 50;
+      background: rgba(250, 250, 247, 0.92);
+      backdrop-filter: blur(8px);
+    }
+    .nav-inner {
+      max-width: 1280px; margin: 0 auto;
+      padding: 1.4rem 2rem;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .logo {
+      display: flex; align-items: baseline; gap: 0.7rem;
+    }
+    .logo-zh {
+      font-size: 1.8rem; font-weight: 500; letter-spacing: 0.3em;
+    }
+    .logo-en {
+      font-size: 0.7rem; letter-spacing: 0.4em; color: var(--ink-soft);
+    }
+    .nav-links { display: flex; gap: 3rem; font-size: 0.9rem; letter-spacing: 0.25em; color: var(--ink-soft); }
+    .nav-links a:hover { color: var(--vermilion); }
+    .nav-right { display: flex; align-items: center; gap: 1.5rem; }
+    .lang-switch { display: flex; gap: 0.4rem; align-items: center; font-size: 0.85rem; }
+    .lang-btn {
+      border: none; background: transparent; cursor: pointer;
+      color: var(--ink-faint); font-family: inherit;
+      padding: 0.3rem 0.5rem; transition: color 0.2s;
+      letter-spacing: 0.15em;
+    }
+    .lang-btn.active { color: var(--ink); border-bottom: 1px solid var(--vermilion); }
+    .lang-divider { color: var(--ink-faint); }
+    @media (max-width: 768px) { .nav-links { display: none; } }
+
+    /* Hero */
+    .hero {
+      min-height: 88vh; display: grid;
+      grid-template-columns: 1fr 1fr;
+      max-width: 1280px; margin: 0 auto;
+      padding: 4rem 2rem;
+      gap: 4rem;
+      align-items: center;
+    }
+    @media (max-width: 900px) { .hero { grid-template-columns: 1fr; min-height: auto; padding: 3rem 1.5rem; } }
+    .hero-text { position: relative; }
+    .hero-mark {
+      position: absolute; top: -2rem; left: -1rem;
+      font-size: 8rem; color: var(--vermilion);
+      opacity: 0.08; line-height: 1;
+      font-family: "STKaiti", "Kaiti TC", serif;
+      pointer-events: none; z-index: 0;
+    }
+    .hero h1 {
+      font-size: clamp(3rem, 6vw, 5rem);
+      font-weight: 400; line-height: 1.3;
+      letter-spacing: 0.1em; margin-bottom: 2rem;
+      position: relative; z-index: 1;
+    }
+    .hero h1 .v {
+      display: inline-block;
+      background: var(--ink); color: var(--bg);
+      padding: 0 0.3em;
+    }
+    .hero h1 .stamp {
+      display: inline-block; vertical-align: middle;
+      width: 0.7em; height: 0.7em;
+      background: var(--vermilion);
+      margin: 0 0.15em 0.15em;
+    }
+    .hero-quote {
+      font-size: 1.05rem; color: var(--ink-soft);
+      max-width: 420px; margin-bottom: 2.5rem;
+      line-height: 2;
+    }
+    .hero-cta { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .btn {
+      padding: 1rem 2rem; font-family: inherit;
+      font-size: 0.95rem; letter-spacing: 0.25em;
+      border: none; cursor: pointer; transition: all 0.3s;
+    }
+    .btn-primary { background: var(--ink); color: var(--bg); }
+    .btn-primary:hover { background: var(--vermilion); }
+    .btn-ghost { background: transparent; color: var(--ink); border-bottom: 1px solid var(--ink); padding: 1rem 0; }
+    .btn-ghost:hover { color: var(--vermilion); border-color: var(--vermilion); }
+
+    /* Hero visual */
+    .hero-visual {
+      aspect-ratio: 4 / 5;
+      position: relative;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .enso {
+      width: 80%; aspect-ratio: 1;
+      border: 12px solid var(--ink);
+      border-radius: 50%;
+      border-right-color: transparent;
+      transform: rotate(-30deg);
+      position: relative;
+    }
+    .enso::after {
+      content: ''; position: absolute;
+      width: 24px; height: 24px;
+      background: var(--vermilion);
+      bottom: 8%; right: 15%;
+      transform: rotate(45deg);
+    }
+
+    /* Sections */
+    section { padding: 7rem 2rem; }
+    .container { max-width: 1280px; margin: 0 auto; }
+    .section-head {
+      display: grid; grid-template-columns: auto 1fr;
+      gap: 4rem; align-items: end;
+      margin-bottom: 5rem;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 2rem;
+    }
+    @media (max-width: 768px) { .section-head { grid-template-columns: 1fr; gap: 1rem; } }
+    .section-num {
+      font-size: 5rem; line-height: 1;
+      color: var(--ink-faint); font-weight: 300;
+      font-family: "Georgia", serif;
+    }
+    .section-head-text { text-align: right; }
+    @media (max-width: 768px) { .section-head-text { text-align: left; } }
+    .section-eyebrow { letter-spacing: 0.4em; color: var(--vermilion); font-size: 0.8rem; margin-bottom: 0.5rem; }
+    .section-title { font-size: 2.4rem; font-weight: 400; letter-spacing: 0.2em; }
+
+    /* Services */
+    .service-list { border-top: 1px solid var(--ink); }
+    .service-row {
+      display: grid; grid-template-columns: 80px 1fr auto auto;
+      gap: 2rem; align-items: center;
+      padding: 2.2rem 0;
+      border-bottom: 1px solid var(--line);
+      transition: background 0.3s, padding 0.3s;
+      cursor: pointer;
+    }
+    .service-row:hover { background: var(--paper); padding-left: 1.5rem; padding-right: 1.5rem; }
+    .service-row:hover .service-num { color: var(--vermilion); }
+    .service-row:hover .service-arrow { transform: translateX(8px); color: var(--vermilion); }
+    @media (max-width: 768px) {
+      .service-row { grid-template-columns: 50px 1fr; gap: 1rem; }
+      .service-row .service-meta-cell, .service-row .service-arrow { display: none; }
+    }
+    .service-num { font-size: 1.5rem; color: var(--ink-faint); font-family: "Georgia", serif; transition: color 0.3s; }
+    .service-title { font-size: 1.4rem; letter-spacing: 0.15em; }
+    .service-desc { font-size: 0.9rem; color: var(--ink-soft); margin-top: 0.4rem; letter-spacing: 0.05em; }
+    .service-meta-cell { font-size: 0.85rem; color: var(--ink-soft); letter-spacing: 0.15em; text-align: right; }
+    .service-arrow { font-size: 1.2rem; color: var(--ink-faint); transition: transform 0.3s, color 0.3s; }
+
+    /* Products */
+    .products-section { background: var(--paper); }
+    .product-grid {
+      display: grid; gap: 0;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      border-left: 1px solid var(--line);
+      border-top: 1px solid var(--line);
+    }
+    .product-card {
+      padding: 2.5rem; cursor: pointer;
+      border-right: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      transition: background 0.3s;
+      position: relative;
+    }
+    .product-card:hover { background: var(--bg); }
+    .product-card:hover .product-name { color: var(--vermilion); }
+    .product-img {
+      aspect-ratio: 1; margin-bottom: 1.5rem;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 4rem; background: var(--bg);
+    }
+    .product-num {
+      position: absolute; top: 1.2rem; right: 1.2rem;
+      font-family: "Georgia", serif; color: var(--ink-faint);
+      font-size: 0.9rem;
+    }
+    .product-cat { font-size: 0.7rem; letter-spacing: 0.4em; color: var(--vermilion); margin-bottom: 0.5rem; }
+    .product-name { font-size: 1.15rem; letter-spacing: 0.1em; margin-bottom: 0.8rem; transition: color 0.3s; }
+    .product-line { width: 30px; height: 1px; background: var(--ink); margin: 0.8rem 0; }
+    .product-price { font-size: 0.95rem; letter-spacing: 0.1em; }
+
+    /* Quote */
+    .quote-section {
+      padding: 8rem 2rem; text-align: center;
+      max-width: 800px; margin: 0 auto;
+    }
+    .quote-mark {
+      font-size: 4rem; color: var(--vermilion);
+      line-height: 1; margin-bottom: 1rem;
+      font-family: "STKaiti", "Kaiti TC", serif;
+    }
+    .quote-text {
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      line-height: 1.8; letter-spacing: 0.12em;
+      font-weight: 400;
+    }
+    .quote-author { margin-top: 2rem; color: var(--ink-soft); letter-spacing: 0.3em; font-size: 0.85rem; }
+
+    /* CTA */
+    .cta-section {
+      background: var(--ink); color: var(--bg);
+      padding: 6rem 2rem; text-align: center;
+    }
+    .cta-section h2 {
+      font-size: clamp(2rem, 4vw, 2.8rem);
+      font-weight: 400; letter-spacing: 0.15em;
+      margin-bottom: 1.5rem;
+    }
+    .cta-section p { color: rgba(250, 250, 247, 0.6); margin-bottom: 2.5rem; letter-spacing: 0.1em; }
+    .cta-section .btn-primary { background: var(--vermilion); }
+    .cta-section .btn-primary:hover { background: var(--bg); color: var(--ink); }
+
+    /* Footer */
+    footer {
+      padding: 4rem 2rem 2rem;
+      border-top: 1px solid var(--line);
+    }
+    .footer-inner {
+      max-width: 1280px; margin: 0 auto;
+      display: flex; justify-content: space-between; flex-wrap: wrap; gap: 2rem;
+      font-size: 0.85rem; color: var(--ink-soft); letter-spacing: 0.15em;
+    }
+    .footer-bottom {
+      max-width: 1280px; margin: 3rem auto 0;
+      padding-top: 2rem; border-top: 1px solid var(--line);
+      text-align: center; font-size: 0.8rem; color: var(--ink-faint);
+      letter-spacing: 0.2em;
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <div class="nav-inner">
+      <div class="logo">
+        <span class="logo-zh" data-i18n="brand">無相</span>
+        <span class="logo-en" data-i18n="brand.sub">FORMLESS</span>
+      </div>
+      <div class="nav-links">
+        <a href="#services" data-i18n="nav.services">療癒</a>
+        <a href="#products" data-i18n="nav.products">物件</a>
+        <a href="#cta" data-i18n="nav.contact">預約</a>
+      </div>
+      <div class="nav-right">
+        <div class="lang-switch">
+          <button class="lang-btn active" data-lang="zh">中</button>
+          <span class="lang-divider">/</span>
+          <button class="lang-btn" data-lang="es">ES</button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="hero-text">
+      <span class="hero-mark">禪</span>
+      <h1 data-i18n-html="hero.title">心若<span class="v">無相</span><br>萬象<span class="stamp"></span>自<br>然而生</h1>
+      <p class="hero-quote" data-i18n-html="hero.quote">
+        在喧囂的時代，<br>給自己一段沉靜的時光。<br>身、心、靈，本是一體。
+      </p>
+      <div class="hero-cta">
+        <a href="#services" class="btn btn-primary" data-i18n="hero.cta1">預約靜心</a>
+        <a href="#products" class="btn btn-ghost" data-i18n="hero.cta2">瀏覽物件 →</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="enso"></div>
+    </div>
+  </header>
+
+  <section id="services">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-num">壹</div>
+        <div class="section-head-text">
+          <div class="section-eyebrow">SERVICES</div>
+          <h2 class="section-title" data-i18n="services.title">療癒之道</h2>
+        </div>
+      </div>
+      <div class="service-list">
+        <div class="service-row">
+          <div class="service-num">01</div>
+          <div>
+            <div class="service-title" data-i18n="s1.title">靜坐冥想</div>
+            <div class="service-desc" data-i18n="s1.desc">於呼吸之間，回到當下此刻。</div>
+          </div>
+          <div class="service-meta-cell"><span data-i18n="s1.price">NT$ 1,800</span> · <span data-i18n="s1.dur">60 分</span></div>
+          <div class="service-arrow">→</div>
+        </div>
+        <div class="service-row">
+          <div class="service-num">02</div>
+          <div>
+            <div class="service-title" data-i18n="s2.title">頌缽聲療</div>
+            <div class="service-desc" data-i18n="s2.desc">古老振動，洗滌身心積垢。</div>
+          </div>
+          <div class="service-meta-cell"><span data-i18n="s2.price">NT$ 3,200</span> · <span data-i18n="s2.dur">75 分</span></div>
+          <div class="service-arrow">→</div>
+        </div>
+        <div class="service-row">
+          <div class="service-num">03</div>
+          <div>
+            <div class="service-title" data-i18n="s3.title">茶禪課程</div>
+            <div class="service-desc" data-i18n="s3.desc">一杯茶中，看見自己的呼吸。</div>
+          </div>
+          <div class="service-meta-cell"><span data-i18n="s3.price">NT$ 2,400</span> · <span data-i18n="s3.dur">90 分</span></div>
+          <div class="service-arrow">→</div>
+        </div>
+        <div class="service-row">
+          <div class="service-num">04</div>
+          <div>
+            <div class="service-title" data-i18n="s4.title">能量調理</div>
+            <div class="service-desc" data-i18n="s4.desc">疏通堵塞，回到身心輕盈的本來面目。</div>
+          </div>
+          <div class="service-meta-cell"><span data-i18n="s4.price">NT$ 2,800</span> · <span data-i18n="s4.dur">60 分</span></div>
+          <div class="service-arrow">→</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="products" class="products-section">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-num">貳</div>
+        <div class="section-head-text">
+          <div class="section-eyebrow">OBJECTS</div>
+          <h2 class="section-title" data-i18n="products.title">器物選輯</h2>
+        </div>
+      </div>
+      <div class="product-grid">
+        <div class="product-card">
+          <div class="product-num">i</div>
+          <div class="product-img">🍵</div>
+          <div class="product-cat">TEA</div>
+          <div class="product-name" data-i18n="p1.name">陶手作茶碗</div>
+          <div class="product-line"></div>
+          <div class="product-price">NT$ 1,680</div>
+        </div>
+        <div class="product-card">
+          <div class="product-num">ii</div>
+          <div class="product-img">🪔</div>
+          <div class="product-cat">INCENSE</div>
+          <div class="product-name" data-i18n="p2.name">沉香線香一盒</div>
+          <div class="product-line"></div>
+          <div class="product-price">NT$ 980</div>
+        </div>
+        <div class="product-card">
+          <div class="product-num">iii</div>
+          <div class="product-img">🔔</div>
+          <div class="product-cat">SOUND</div>
+          <div class="product-name" data-i18n="p3.name">迷你銅缽</div>
+          <div class="product-line"></div>
+          <div class="product-price">NT$ 2,480</div>
+        </div>
+        <div class="product-card">
+          <div class="product-num">iv</div>
+          <div class="product-img">📿</div>
+          <div class="product-cat">JEWELLERY</div>
+          <div class="product-name" data-i18n="p4.name">蜜蠟念珠手串</div>
+          <div class="product-line"></div>
+          <div class="product-price">NT$ 3,280</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="quote-section">
+    <div class="quote-mark">「」</div>
+    <p class="quote-text" data-i18n="quote.text">當下這一刻，<br>就是你全部的人生。</p>
+    <div class="quote-author" data-i18n="quote.author">— 一行禪師</div>
+  </section>
+
+  <section class="cta-section" id="cta">
+    <h2 data-i18n="cta.title">回到無相，回到自己</h2>
+    <p data-i18n="cta.desc">首次體驗 9 折 · 贈手作茶包乙份</p>
+    <a href="#" class="btn btn-primary" data-i18n="cta.btn">預約靜心時光</a>
+  </section>
+
+  <footer>
+    <div class="footer-inner">
+      <span data-i18n="footer.brand">無相 FORMLESS</span>
+      <span data-i18n="footer.location">台北 · 大安</span>
+      <span>hello@formless.tw</span>
+    </div>
+    <div class="footer-bottom" data-i18n="footer.copy">© 2026 FORMLESS · ALL RIGHTS RESERVED</div>
+  </footer>
+
+  <script>
+    const i18n = {
+      zh: {
+        brand: "無相", "brand.sub": "FORMLESS",
+        "nav.services": "療癒", "nav.products": "物件", "nav.contact": "預約",
+        "hero.title": "心若<span class=\"v\">無相</span><br>萬象<span class=\"stamp\"></span>自<br>然而生",
+        "hero.quote": "在喧囂的時代，<br>給自己一段沉靜的時光。<br>身、心、靈，本是一體。",
+        "hero.cta1": "預約靜心", "hero.cta2": "瀏覽物件 →",
+        "services.title": "療癒之道",
+        "s1.title": "靜坐冥想", "s1.desc": "於呼吸之間，回到當下此刻。", "s1.price": "NT$ 1,800", "s1.dur": "60 分",
+        "s2.title": "頌缽聲療", "s2.desc": "古老振動，洗滌身心積垢。", "s2.price": "NT$ 3,200", "s2.dur": "75 分",
+        "s3.title": "茶禪課程", "s3.desc": "一杯茶中，看見自己的呼吸。", "s3.price": "NT$ 2,400", "s3.dur": "90 分",
+        "s4.title": "能量調理", "s4.desc": "疏通堵塞，回到身心輕盈的本來面目。", "s4.price": "NT$ 2,800", "s4.dur": "60 分",
+        "products.title": "器物選輯",
+        "p1.name": "陶手作茶碗", "p2.name": "沉香線香一盒", "p3.name": "迷你銅缽", "p4.name": "蜜蠟念珠手串",
+        "quote.text": "當下這一刻，<br>就是你全部的人生。", "quote.author": "— 一行禪師",
+        "cta.title": "回到無相，回到自己",
+        "cta.desc": "首次體驗 9 折 · 贈手作茶包乙份",
+        "cta.btn": "預約靜心時光",
+        "footer.brand": "無相 FORMLESS", "footer.location": "台北 · 大安",
+        "footer.copy": "© 2026 FORMLESS · 版權所有"
+      },
+      es: {
+        brand: "FORMLESS", "brand.sub": "SIN FORMA",
+        "nav.services": "Sesiones", "nav.products": "Objetos", "nav.contact": "Reservar",
+        "hero.title": "Cuando la mente está <span class=\"v\">sin forma</span>,<br>todo<span class=\"stamp\"></span> nace<br>de manera natural",
+        "hero.quote": "En tiempos de ruido,<br>regálate un momento de silencio.<br>Cuerpo, mente y alma — una sola cosa.",
+        "hero.cta1": "Reservar sesión", "hero.cta2": "Ver objetos →",
+        "services.title": "El camino de la sanación",
+        "s1.title": "Meditación sentada", "s1.desc": "Entre respiración y respiración, vuelve al presente.", "s1.price": "Desde 60 €", "s1.dur": "60 min",
+        "s2.title": "Cuencos tibetanos", "s2.desc": "Vibraciones ancestrales que limpian cuerpo y mente.", "s2.price": "Desde 110 €", "s2.dur": "75 min",
+        "s3.title": "Ceremonia del té", "s3.desc": "En una taza de té, encuentras tu propia respiración.", "s3.price": "Desde 80 €", "s3.dur": "90 min",
+        "s4.title": "Equilibrio energético", "s4.desc": "Desbloquea tensiones, regresa a tu ligereza original.", "s4.price": "Desde 95 €", "s4.dur": "60 min",
+        "products.title": "Selección de objetos",
+        "p1.name": "Cuenco de té artesanal", "p2.name": "Caja de incienso de agar", "p3.name": "Cuenco de bronce mini", "p4.name": "Pulsera de mala de ámbar",
+        "quote.text": "Este momento presente<br>es toda tu vida.", "quote.author": "— Thich Nhat Hanh",
+        "cta.title": "Regresa al sin forma, regresa a ti",
+        "cta.desc": "10 % en tu primera experiencia · regalo de té artesanal",
+        "cta.btn": "Reservar mi momento",
+        "footer.brand": "FORMLESS · SIN FORMA", "footer.location": "Madrid · Centro",
+        "footer.copy": "© 2026 FORMLESS · Todos los derechos reservados"
+      }
+    };
+    function applyLang(lang) {
+      const dict = i18n[lang]; if (!dict) return;
+      document.documentElement.lang = lang === "zh" ? "zh-Hant" : "es";
+      document.querySelectorAll("[data-i18n]").forEach(el => { const k = el.getAttribute("data-i18n"); if (dict[k] !== undefined) el.textContent = dict[k]; });
+      document.querySelectorAll("[data-i18n-html]").forEach(el => { const k = el.getAttribute("data-i18n-html"); if (dict[k] !== undefined) el.innerHTML = dict[k]; });
+      document.querySelectorAll(".lang-btn").forEach(b => b.classList.toggle("active", b.dataset.lang === lang));
+      try { localStorage.setItem("preferredLang", lang); } catch (e) {}
+    }
+    document.querySelectorAll(".lang-btn").forEach(b => b.addEventListener("click", () => applyLang(b.dataset.lang)));
+    let saved; try { saved = localStorage.getItem("preferredLang"); } catch (e) {}
+    applyLang(saved || ((navigator.language || "").toLowerCase().startsWith("es") ? "es" : "zh"));
+  </script>
+</body>
+</html>

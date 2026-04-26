@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CryptoX — 下一代加密貨幣交易平台</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0F172A;
+    --bg-2:#0B1220;
+    --surface:rgba(255,255,255,0.04);
+    --surface-2:rgba(255,255,255,0.06);
+    --border:rgba(255,255,255,0.08);
+    --border-strong:rgba(255,255,255,0.14);
+    --fg:#F8FAFC;
+    --muted:#94A3B8;
+    --muted-2:#64748B;
+    --primary:#F59E0B;
+    --primary-2:#FBBF24;
+    --accent:#8B5CF6;
+    --accent-2:#A78BFA;
+    --success:#10B981;
+    --danger:#EF4444;
+    --radius:16px;
+    --radius-lg:24px;
+    --ease:cubic-bezier(0.16,1,0.3,1);
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Inter',system-ui,-apple-system,sans-serif;
+    background:var(--bg);
+    color:var(--fg);
+    line-height:1.6;
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* ---------- Ambient background blobs ---------- */
+  .ambient{
+    position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;
+  }
+  .blob{
+    position:absolute;border-radius:50%;filter:blur(120px);opacity:.45;
+    animation:drift 18s var(--ease) infinite;
+  }
+  .blob-1{width:520px;height:520px;background:#8B5CF6;top:-180px;left:-120px;}
+  .blob-2{width:600px;height:600px;background:#F59E0B;top:30%;right:-200px;animation-delay:-6s;opacity:.30;}
+  .blob-3{width:480px;height:480px;background:#6366F1;bottom:-180px;left:30%;animation-delay:-12s;opacity:.25;}
+  @keyframes drift{
+    0%,100%{transform:translate(0,0) scale(1)}
+    50%{transform:translate(40px,-30px) scale(1.08)}
+  }
+
+  /* ---------- Layout ---------- */
+  .container{max-width:1200px;margin:0 auto;padding:0 24px;position:relative;z-index:1}
+
+  /* ---------- Navbar ---------- */
+  .nav{
+    position:sticky;top:0;z-index:50;
+    backdrop-filter:blur(20px) saturate(160%);
+    -webkit-backdrop-filter:blur(20px) saturate(160%);
+    background:rgba(15,23,42,0.6);
+    border-bottom:1px solid var(--border);
+  }
+  .nav-inner{
+    display:flex;align-items:center;justify-content:space-between;
+    height:72px;
+  }
+  .logo{
+    display:flex;align-items:center;gap:10px;
+    font-family:'Orbitron',sans-serif;font-weight:900;font-size:20px;letter-spacing:.04em;
+  }
+  .logo-mark{
+    width:32px;height:32px;border-radius:9px;
+    background:linear-gradient(135deg,var(--primary),var(--accent));
+    display:grid;place-items:center;color:#0F172A;font-weight:900;
+    box-shadow:0 8px 24px rgba(245,158,11,.35);
+  }
+  .nav-links{display:flex;gap:32px;align-items:center}
+  .nav-links a{
+    color:var(--muted);text-decoration:none;font-size:14px;font-weight:500;
+    transition:color .2s var(--ease);
+  }
+  .nav-links a:hover{color:var(--fg)}
+  .nav-cta{display:flex;gap:12px;align-items:center}
+  @media (max-width:768px){
+    .nav-links{display:none}
+  }
+
+  /* ---------- Buttons ---------- */
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:8px;
+    padding:12px 22px;border-radius:12px;font-size:14px;font-weight:600;
+    cursor:pointer;border:none;text-decoration:none;
+    transition:transform .2s var(--ease),box-shadow .25s var(--ease),background .2s var(--ease);
+    font-family:inherit;white-space:nowrap;
+  }
+  .btn:active{transform:scale(.97)}
+  .btn-primary{
+    background:linear-gradient(135deg,var(--primary),var(--primary-2));
+    color:#0F172A;
+    box-shadow:0 10px 30px -10px rgba(245,158,11,.55),inset 0 1px 0 rgba(255,255,255,.3);
+  }
+  .btn-primary:hover{
+    box-shadow:0 16px 36px -10px rgba(245,158,11,.7),inset 0 1px 0 rgba(255,255,255,.3);
+    transform:translateY(-1px);
+  }
+  .btn-ghost{
+    background:var(--surface);color:var(--fg);
+    border:1px solid var(--border-strong);
+    backdrop-filter:blur(12px);
+  }
+  .btn-ghost:hover{background:var(--surface-2);border-color:rgba(255,255,255,.22)}
+  .btn-lg{padding:16px 28px;font-size:15px;border-radius:14px}
+
+  /* ---------- Hero ---------- */
+  .hero{padding:80px 0 100px;text-align:center;position:relative}
+  .pill{
+    display:inline-flex;align-items:center;gap:8px;
+    padding:6px 14px;border-radius:999px;
+    background:rgba(139,92,246,.12);border:1px solid rgba(139,92,246,.3);
+    color:var(--accent-2);font-size:13px;font-weight:500;
+    margin-bottom:24px;
+  }
+  .pill .dot{width:6px;height:6px;border-radius:50%;background:var(--accent-2);box-shadow:0 0 12px var(--accent-2);animation:pulse 2s infinite}
+  @keyframes pulse{50%{opacity:.4}}
+
+  h1.hero-title{
+    font-family:'Orbitron',sans-serif;font-weight:900;
+    font-size:clamp(40px,6vw,76px);line-height:1.05;letter-spacing:-.02em;
+    margin-bottom:24px;
+  }
+  .grad-text{
+    background:linear-gradient(135deg,#FBBF24 0%,#F59E0B 40%,#8B5CF6 100%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .hero-sub{
+    color:var(--muted);font-size:clamp(16px,2vw,19px);
+    max-width:640px;margin:0 auto 40px;line-height:1.7;
+  }
+  .hero-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:64px}
+
+  .hero-stats{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:0;
+    background:var(--surface);
+    border:1px solid var(--border);border-radius:var(--radius-lg);
+    backdrop-filter:blur(16px);
+    overflow:hidden;
+    max-width:900px;margin:0 auto;
+  }
+  .stat{padding:28px 20px;text-align:center;border-right:1px solid var(--border)}
+  .stat:last-child{border-right:none}
+  .stat-num{
+    font-family:'JetBrains Mono',monospace;font-weight:700;
+    font-size:clamp(20px,2.4vw,28px);color:var(--fg);
+    margin-bottom:6px;
+  }
+  .stat-num .accent{color:var(--primary)}
+  .stat-label{color:var(--muted);font-size:13px;letter-spacing:.04em;text-transform:uppercase}
+  @media (max-width:768px){
+    .hero-stats{grid-template-columns:repeat(2,1fr)}
+    .stat:nth-child(2){border-right:none}
+    .stat:nth-child(1),.stat:nth-child(2){border-bottom:1px solid var(--border)}
+  }
+
+  /* ---------- Section base ---------- */
+  section{padding:100px 0;position:relative}
+  .section-head{text-align:center;max-width:680px;margin:0 auto 64px}
+  .eyebrow{
+    display:inline-block;font-family:'JetBrains Mono',monospace;
+    color:var(--primary);font-size:12px;font-weight:500;
+    letter-spacing:.16em;text-transform:uppercase;margin-bottom:14px;
+  }
+  h2.section-title{
+    font-family:'Orbitron',sans-serif;font-weight:700;
+    font-size:clamp(30px,4vw,48px);line-height:1.15;letter-spacing:-.01em;
+    margin-bottom:18px;
+  }
+  .section-sub{color:var(--muted);font-size:17px;line-height:1.7}
+
+  /* ---------- Features ---------- */
+  .feature-grid{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:20px;
+  }
+  .feature-card{
+    position:relative;padding:32px;border-radius:var(--radius-lg);
+    background:var(--surface);border:1px solid var(--border);
+    backdrop-filter:blur(16px);
+    transition:transform .35s var(--ease),border-color .25s var(--ease),background .25s var(--ease);
+    overflow:hidden;
+  }
+  .feature-card::before{
+    content:'';position:absolute;inset:0;border-radius:inherit;
+    background:radial-gradient(600px circle at var(--mx,50%) var(--my,0%),rgba(139,92,246,.12),transparent 40%);
+    opacity:0;transition:opacity .3s var(--ease);pointer-events:none;
+  }
+  .feature-card:hover{transform:translateY(-4px);border-color:var(--border-strong);background:var(--surface-2)}
+  .feature-card:hover::before{opacity:1}
+  .feature-icon{
+    width:48px;height:48px;border-radius:12px;
+    background:linear-gradient(135deg,rgba(245,158,11,.18),rgba(139,92,246,.18));
+    border:1px solid rgba(245,158,11,.28);
+    display:grid;place-items:center;margin-bottom:20px;color:var(--primary);
+  }
+  .feature-card h3{
+    font-family:'Orbitron',sans-serif;font-weight:700;
+    font-size:18px;margin-bottom:10px;letter-spacing:.01em;
+  }
+  .feature-card p{color:var(--muted);font-size:14.5px;line-height:1.7}
+  @media (max-width:900px){.feature-grid{grid-template-columns:repeat(2,1fr)}}
+  @media (max-width:600px){.feature-grid{grid-template-columns:1fr}}
+
+  /* ---------- Market Data ---------- */
+  .market-wrap{
+    background:var(--surface);border:1px solid var(--border);
+    border-radius:var(--radius-lg);backdrop-filter:blur(16px);
+    overflow:hidden;
+  }
+  .market-head{
+    display:flex;justify-content:space-between;align-items:center;
+    padding:22px 28px;border-bottom:1px solid var(--border);
+    flex-wrap:wrap;gap:12px;
+  }
+  .market-head h3{font-family:'Orbitron',sans-serif;font-weight:700;font-size:18px}
+  .live{display:inline-flex;align-items:center;gap:8px;color:var(--muted);font-size:13px;font-family:'JetBrains Mono',monospace}
+  .live-dot{width:8px;height:8px;border-radius:50%;background:var(--success);box-shadow:0 0 12px var(--success);animation:pulse 1.6s infinite}
+
+  table.market{width:100%;border-collapse:collapse}
+  table.market th,table.market td{
+    padding:16px 28px;text-align:right;font-family:'JetBrains Mono',monospace;font-size:14px;
+  }
+  table.market th{
+    color:var(--muted-2);font-weight:500;font-size:12px;
+    letter-spacing:.08em;text-transform:uppercase;
+    border-bottom:1px solid var(--border);background:rgba(0,0,0,.18);
+  }
+  table.market th:first-child,table.market td:first-child{text-align:left}
+  table.market tr{transition:background .2s var(--ease)}
+  table.market tbody tr:hover{background:rgba(255,255,255,.03)}
+  table.market tbody tr+tr td{border-top:1px solid var(--border)}
+  .coin{display:flex;align-items:center;gap:14px;font-family:'Inter',sans-serif}
+  .coin-icon{
+    width:36px;height:36px;border-radius:50%;
+    display:grid;place-items:center;font-weight:700;font-family:'Orbitron',sans-serif;
+    font-size:14px;color:#0F172A;flex-shrink:0;
+  }
+  .coin-name{font-weight:600;font-size:14.5px}
+  .coin-symbol{color:var(--muted-2);font-size:12px;font-family:'JetBrains Mono',monospace}
+  .pos{color:var(--success)}
+  .neg{color:var(--danger)}
+  .spark{height:32px;width:100px;display:inline-block;vertical-align:middle}
+  @media (max-width:768px){
+    table.market th:nth-child(4),table.market td:nth-child(4),
+    table.market th:nth-child(5),table.market td:nth-child(5){display:none}
+    table.market th,table.market td{padding:14px 18px}
+  }
+
+  /* ---------- Security ---------- */
+  .sec-grid{
+    display:grid;grid-template-columns:1.1fr 1fr;gap:48px;align-items:center;
+  }
+  @media (max-width:900px){.sec-grid{grid-template-columns:1fr}}
+  .sec-list{list-style:none;display:flex;flex-direction:column;gap:18px;margin-top:28px}
+  .sec-item{
+    display:flex;gap:16px;padding:18px;border-radius:14px;
+    background:var(--surface);border:1px solid var(--border);
+    backdrop-filter:blur(12px);
+    transition:border-color .2s var(--ease);
+  }
+  .sec-item:hover{border-color:var(--border-strong)}
+  .sec-icon{
+    flex-shrink:0;width:40px;height:40px;border-radius:10px;
+    background:rgba(16,185,129,.12);border:1px solid rgba(16,185,129,.3);
+    display:grid;place-items:center;color:var(--success);
+  }
+  .sec-item h4{font-family:'Orbitron',sans-serif;font-size:15px;margin-bottom:4px}
+  .sec-item p{color:var(--muted);font-size:14px}
+
+  .shield-vis{
+    position:relative;aspect-ratio:1/1;max-width:480px;margin:0 auto;
+    display:grid;place-items:center;
+  }
+  .shield-vis::before{
+    content:'';position:absolute;inset:10%;border-radius:50%;
+    background:radial-gradient(circle,rgba(139,92,246,.25),transparent 60%);
+    filter:blur(40px);
+  }
+  .shield-card{
+    position:relative;
+    background:var(--surface);border:1px solid var(--border-strong);
+    border-radius:24px;padding:32px;width:88%;
+    backdrop-filter:blur(20px);
+    box-shadow:0 30px 80px -30px rgba(139,92,246,.4);
+  }
+  .shield-row{display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-bottom:1px solid var(--border);font-size:13.5px}
+  .shield-row:last-child{border-bottom:none}
+  .shield-row .k{color:var(--muted);font-family:'JetBrains Mono',monospace}
+  .shield-row .v{font-weight:600;display:inline-flex;align-items:center;gap:8px}
+  .check{width:18px;height:18px;border-radius:50%;background:var(--success);display:grid;place-items:center;color:#0F172A;font-size:11px}
+
+  /* ---------- CTA ---------- */
+  .cta{
+    position:relative;text-align:center;padding:80px 40px;
+    border-radius:var(--radius-lg);overflow:hidden;
+    background:
+      radial-gradient(800px circle at 50% 0%,rgba(139,92,246,.25),transparent 60%),
+      radial-gradient(600px circle at 50% 100%,rgba(245,158,11,.18),transparent 60%),
+      linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.02));
+    border:1px solid var(--border-strong);
+    backdrop-filter:blur(20px);
+  }
+  .cta h2{
+    font-family:'Orbitron',sans-serif;font-weight:900;
+    font-size:clamp(30px,4.4vw,52px);line-height:1.1;margin-bottom:16px;
+  }
+  .cta p{color:var(--muted);font-size:18px;max-width:560px;margin:0 auto 32px}
+  .cta-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+
+  /* ---------- Footer ---------- */
+  footer{
+    border-top:1px solid var(--border);padding:48px 0 36px;margin-top:80px;
+    color:var(--muted);font-size:13.5px;
+  }
+  .foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:32px;margin-bottom:32px}
+  @media (max-width:768px){.foot-grid{grid-template-columns:1fr 1fr;gap:28px}}
+  .foot-col h5{color:var(--fg);font-family:'Orbitron',sans-serif;font-size:13px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
+  .foot-col a{display:block;color:var(--muted);text-decoration:none;padding:6px 0;transition:color .2s var(--ease)}
+  .foot-col a:hover{color:var(--fg)}
+  .foot-bottom{
+    display:flex;justify-content:space-between;align-items:center;
+    padding-top:24px;border-top:1px solid var(--border);
+    flex-wrap:wrap;gap:12px;font-size:13px;
+  }
+
+  /* ---------- Reveal animation ---------- */
+  .reveal{opacity:0;transform:translateY(24px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
+  .reveal.in{opacity:1;transform:none}
+  @media (prefers-reduced-motion:reduce){
+    *,*::before,*::after{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important}
+    .reveal{opacity:1;transform:none}
+  }
+
+  :focus-visible{outline:2px solid var(--primary);outline-offset:3px;border-radius:8px}
+</style>
+</head>
+<body>
+
+<div class="ambient" aria-hidden="true">
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+</div>
+
+<!-- ============== NAV ============== -->
+<header class="nav">
+  <div class="container nav-inner">
+    <a href="#" class="logo" aria-label="CryptoX 首頁">
+      <span class="logo-mark">X</span>
+      <span>CRYPTO<span style="color:var(--primary)">X</span></span>
+    </a>
+    <nav class="nav-links" aria-label="主導覽">
+      <a href="#features">特色功能</a>
+      <a href="#market">市場行情</a>
+      <a href="#security">安全保障</a>
+      <a href="#start">開始使用</a>
+    </nav>
+    <div class="nav-cta">
+      <a href="#" class="btn btn-ghost" style="padding:10px 18px;font-size:13.5px">登入</a>
+      <a href="#start" class="btn btn-primary" style="padding:10px 18px;font-size:13.5px">註冊</a>
+    </div>
+  </div>
+</header>
+
+<!-- ============== HERO ============== -->
+<section class="hero">
+  <div class="container">
+    <div class="reveal">
+      <span class="pill"><span class="dot"></span>已支援 200+ 加密貨幣交易</span>
+    </div>
+
+    <h1 class="hero-title reveal">
+      掌握下一個十年，<br>
+      <span class="grad-text">從這一筆交易開始</span>
+    </h1>
+
+    <p class="hero-sub reveal">
+      不只是一個交易所，而是您通往去中心化未來的入口。
+      頂尖速度、極致安全、零門檻體驗，讓每一位投資者都能站上前線。
+    </p>
+
+    <div class="hero-actions reveal">
+      <a href="#start" class="btn btn-primary btn-lg">
+        立即開始交易
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+      </a>
+      <a href="#features" class="btn btn-ghost btn-lg">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polygon points="5 3 19 12 5 21 5 3" fill="currentColor"/></svg>
+        觀看示範
+      </a>
+    </div>
+
+    <div class="hero-stats reveal" role="list">
+      <div class="stat" role="listitem">
+        <div class="stat-num"><span class="accent">$</span>2.8B+</div>
+        <div class="stat-label">24h 交易量</div>
+      </div>
+      <div class="stat" role="listitem">
+        <div class="stat-num">12M+</div>
+        <div class="stat-label">全球用戶</div>
+      </div>
+      <div class="stat" role="listitem">
+        <div class="stat-num">200+</div>
+        <div class="stat-label">支援幣種</div>
+      </div>
+      <div class="stat" role="listitem">
+        <div class="stat-num">0.05<span style="color:var(--muted-2)">%</span></div>
+        <div class="stat-label">最低手續費</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== FEATURES ============== -->
+<section id="features">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">// FEATURES</span>
+      <h2 class="section-title">為交易者打造的<br>全方位工具</h2>
+      <p class="section-sub">從新手到機構交易員，CryptoX 提供業界領先的速度、深度流動性與專業工具。</p>
+    </div>
+
+    <div class="feature-grid">
+      <article class="feature-card reveal">
+        <div class="feature-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" fill="currentColor" fill-opacity=".2"/></svg>
+        </div>
+        <h3>毫秒級撮合</h3>
+        <p>自研撮合引擎每秒可處理 140 萬筆訂單，平均延遲低於 5 毫秒，確保您的策略精準執行。</p>
+      </article>
+
+      <article class="feature-card reveal">
+        <div class="feature-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 14l4-4 4 4 5-5"/></svg>
+        </div>
+        <h3>進階圖表分析</h3>
+        <p>整合 TradingView 圖表、120+ 技術指標與多時間框架分析，讓您掌握每一波市場脈動。</p>
+      </article>
+
+      <article class="feature-card reveal">
+        <div class="feature-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+        </div>
+        <h3>機構級託管</h3>
+        <p>95% 資產儲存於離線冷錢包，多重簽名與 HSM 硬體加密模組，符合 SOC 2 Type II 認證。</p>
+      </article>
+
+      <article class="feature-card reveal">
+        <div class="feature-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        </div>
+        <h3>24/7 全天候交易</h3>
+        <p>全年無休的市場運作，配合智慧提醒與自動化交易策略，讓您隨時掌握獲利契機。</p>
+      </article>
+
+      <article class="feature-card reveal">
+        <div class="feature-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        </div>
+        <h3>多鏈生態整合</h3>
+        <p>原生支援 Ethereum、Solana、BNB Chain 等 18 條主流公鏈，一站完成跨鏈轉帳與資產管理。</p>
+      </article>
+
+      <article class="feature-card reveal">
+        <div class="feature-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 11-6.2-8.55"/><path d="M21 3v6h-6"/></svg>
+        </div>
+        <h3>低延遲 API</h3>
+        <p>提供 REST、WebSocket 與 FIX 協議的程式化交易介面，為量化團隊量身打造。</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============== MARKET DATA ============== -->
+<section id="market">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">// LIVE MARKET</span>
+      <h2 class="section-title">即時市場行情</h2>
+      <p class="section-sub">追蹤主流加密貨幣的價格、變動與成交量，市場動態盡在掌握。</p>
+    </div>
+
+    <div class="market-wrap reveal">
+      <div class="market-head">
+        <h3>熱門幣種 Top 5</h3>
+        <span class="live"><span class="live-dot"></span>LIVE — 每 3 秒更新</span>
+      </div>
+      <table class="market" aria-label="加密貨幣市場行情表">
+        <thead>
+          <tr>
+            <th scope="col">資產</th>
+            <th scope="col">價格 (USD)</th>
+            <th scope="col">24h 漲跌</th>
+            <th scope="col">市值</th>
+            <th scope="col">7 天走勢</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <div class="coin">
+                <div class="coin-icon" style="background:linear-gradient(135deg,#F7931A,#FBBF24)">B</div>
+                <div>
+                  <div class="coin-name">Bitcoin</div>
+                  <div class="coin-symbol">BTC</div>
+                </div>
+              </div>
+            </td>
+            <td>$67,432.18</td>
+            <td class="pos">+2.84%</td>
+            <td>$1.33T</td>
+            <td>
+              <svg class="spark" viewBox="0 0 100 32" preserveAspectRatio="none"><polyline fill="none" stroke="#10B981" stroke-width="2" points="0,22 12,18 24,20 36,14 48,16 60,10 72,8 84,6 100,4"/></svg>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div class="coin">
+                <div class="coin-icon" style="background:linear-gradient(135deg,#627EEA,#A78BFA)">E</div>
+                <div>
+                  <div class="coin-name">Ethereum</div>
+                  <div class="coin-symbol">ETH</div>
+                </div>
+              </div>
+            </td>
+            <td>$3,512.49</td>
+            <td class="pos">+1.62%</td>
+            <td>$422.1B</td>
+            <td>
+              <svg class="spark" viewBox="0 0 100 32" preserveAspectRatio="none"><polyline fill="none" stroke="#10B981" stroke-width="2" points="0,20 12,22 24,18 36,16 48,18 60,14 72,12 84,10 100,8"/></svg>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div class="coin">
+                <div class="coin-icon" style="background:linear-gradient(135deg,#9945FF,#14F195)">S</div>
+                <div>
+                  <div class="coin-name">Solana</div>
+                  <div class="coin-symbol">SOL</div>
+                </div>
+              </div>
+            </td>
+            <td>$184.27</td>
+            <td class="pos">+5.71%</td>
+            <td>$84.2B</td>
+            <td>
+              <svg class="spark" viewBox="0 0 100 32" preserveAspectRatio="none"><polyline fill="none" stroke="#10B981" stroke-width="2" points="0,24 12,20 24,22 36,16 48,12 60,10 72,8 84,6 100,3"/></svg>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div class="coin">
+                <div class="coin-icon" style="background:linear-gradient(135deg,#F3BA2F,#FBBF24)">B</div>
+                <div>
+                  <div class="coin-name">BNB</div>
+                  <div class="coin-symbol">BNB</div>
+                </div>
+              </div>
+            </td>
+            <td>$612.85</td>
+            <td class="neg">−0.94%</td>
+            <td>$93.6B</td>
+            <td>
+              <svg class="spark" viewBox="0 0 100 32" preserveAspectRatio="none"><polyline fill="none" stroke="#EF4444" stroke-width="2" points="0,10 12,12 24,14 36,12 48,16 60,18 72,20 84,22 100,24"/></svg>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div class="coin">
+                <div class="coin-icon" style="background:linear-gradient(135deg,#23292F,#94A3B8);color:#F8FAFC">X</div>
+                <div>
+                  <div class="coin-name">XRP</div>
+                  <div class="coin-symbol">XRP</div>
+                </div>
+              </div>
+            </td>
+            <td>$0.6128</td>
+            <td class="pos">+3.27%</td>
+            <td>$34.5B</td>
+            <td>
+              <svg class="spark" viewBox="0 0 100 32" preserveAspectRatio="none"><polyline fill="none" stroke="#10B981" stroke-width="2" points="0,18 12,20 24,16 36,14 48,16 60,12 72,14 84,10 100,7"/></svg>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ============== SECURITY ============== -->
+<section id="security">
+  <div class="container">
+    <div class="sec-grid">
+      <div class="reveal">
+        <span class="eyebrow">// SECURITY</span>
+        <h2 class="section-title">您的資產，<br>由銀行級安全守護</h2>
+        <p class="section-sub">CryptoX 採用業界最高標準的安全架構，從硬體加密到合規保險，全方位保護您的每一筆資產。</p>
+
+        <ul class="sec-list">
+          <li class="sec-item">
+            <div class="sec-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <div>
+              <h4>冷錢包離線儲存</h4>
+              <p>95% 用戶資產儲存於多地理位置的離線冷錢包，物理隔離防範網路攻擊。</p>
+            </div>
+          </li>
+
+          <li class="sec-item">
+            <div class="sec-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+            </div>
+            <div>
+              <h4>多重身分驗證</h4>
+              <p>支援 2FA、生物辨識、硬體金鑰 (YubiKey) 與設備白名單，登入安全層層把關。</p>
+            </div>
+          </li>
+
+          <li class="sec-item">
+            <div class="sec-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+            </div>
+            <div>
+              <h4>即時風險監控</h4>
+              <p>AI 驅動的風控系統 24/7 監控異常交易行為，可疑活動即時告警與凍結。</p>
+            </div>
+          </li>
+
+          <li class="sec-item">
+            <div class="sec-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12l2 2 4-4"/><path d="M21 12c0 4.97-3.13 9-8 9s-8-4.03-8-9 3.58-9 8-9 8 4.03 8 9z"/></svg>
+            </div>
+            <div>
+              <h4>$3 億用戶資產保險</h4>
+              <p>與全球頂級保險公司合作，為平台託管資產提供高達 3 億美元的全額保障。</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="shield-vis reveal" aria-hidden="true">
+        <div class="shield-card">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px">
+            <div style="width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,var(--accent),var(--primary));display:grid;place-items:center;color:#0F172A">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
+            </div>
+            <div>
+              <div style="font-family:'Orbitron',sans-serif;font-weight:700;font-size:15px">SECURITY STATUS</div>
+              <div style="color:var(--success);font-size:12px;font-family:'JetBrains Mono',monospace">● ALL SYSTEMS OPERATIONAL</div>
+            </div>
+          </div>
+          <div class="shield-row"><span class="k">SOC 2 Type II</span><span class="v"><span class="check">✓</span> Certified</span></div>
+          <div class="shield-row"><span class="k">ISO 27001</span><span class="v"><span class="check">✓</span> Certified</span></div>
+          <div class="shield-row"><span class="k">Cold Storage</span><span class="v"><span class="check">✓</span> 95.4%</span></div>
+          <div class="shield-row"><span class="k">Insurance Pool</span><span class="v"><span class="check">✓</span> $300M</span></div>
+          <div class="shield-row"><span class="k">Audit Score</span><span class="v" style="color:var(--primary)">A+ / 99.8</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== CTA ============== -->
+<section id="start">
+  <div class="container">
+    <div class="cta reveal">
+      <h2>準備好<span class="grad-text">啟動您的</span><br>加密交易之旅了嗎？</h2>
+      <p>只需 2 分鐘完成註冊，立即享有 $50 USDT 新手禮、終身手續費折抵與專屬客服支援。</p>
+      <div class="cta-actions">
+        <a href="#" class="btn btn-primary btn-lg">
+          免費建立帳戶
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        </a>
+        <a href="#" class="btn btn-ghost btn-lg">下載 App</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== FOOTER ============== -->
+<footer>
+  <div class="container">
+    <div class="foot-grid">
+      <div class="foot-col">
+        <div class="logo" style="margin-bottom:14px">
+          <span class="logo-mark">X</span>
+          <span>CRYPTO<span style="color:var(--primary)">X</span></span>
+        </div>
+        <p style="max-width:320px">下一代加密貨幣交易平台，致力於以最高安全標準與最佳體驗，連結每一位投資者與全球數位資產市場。</p>
+      </div>
+      <div class="foot-col">
+        <h5>產品</h5>
+        <a href="#">現貨交易</a>
+        <a href="#">合約交易</a>
+        <a href="#">理財賺幣</a>
+        <a href="#">機構服務</a>
+      </div>
+      <div class="foot-col">
+        <h5>支援</h5>
+        <a href="#">幫助中心</a>
+        <a href="#">手續費率</a>
+        <a href="#">API 文件</a>
+        <a href="#">系統狀態</a>
+      </div>
+      <div class="foot-col">
+        <h5>公司</h5>
+        <a href="#">關於我們</a>
+        <a href="#">隱私政策</a>
+        <a href="#">服務條款</a>
+        <a href="#">合規聲明</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 CryptoX. 保留所有權利。</span>
+      <span style="font-family:'JetBrains Mono',monospace;color:var(--muted-2);font-size:12px">v3.2.0 · Powered by CryptoX Engine</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Reveal on scroll
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        e.target.classList.add('in');
+        io.unobserve(e.target);
+      }
+    });
+  },{threshold:.12,rootMargin:'0px 0px -40px 0px'});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+  // Feature card spotlight
+  document.querySelectorAll('.feature-card').forEach(card=>{
+    card.addEventListener('mousemove',(e)=>{
+      const r=card.getBoundingClientRect();
+      card.style.setProperty('--mx',((e.clientX-r.left)/r.width*100)+'%');
+      card.style.setProperty('--my',((e.clientY-r.top)/r.height*100)+'%');
+    });
+  });
+</script>
+
+</body>
+</html>

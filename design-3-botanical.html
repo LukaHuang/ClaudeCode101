@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>草木之間 — 自然療癒｜Botanical</title>
+  <style>
+    :root {
+      --bg: #f5f1e8;
+      --bg-2: #ebe5d4;
+      --paper: #fdfbf5;
+      --sage: #8a9a7b;
+      --sage-deep: #5e6f51;
+      --terracotta: #c08868;
+      --ink: #3d4035;
+      --ink-soft: #6e7166;
+      --line: rgba(94, 111, 81, 0.15);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: -apple-system, "PingFang TC", "Microsoft JhengHei", sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.7;
+    }
+    a { color: inherit; text-decoration: none; }
+
+    /* Decorative leaves */
+    .leaf-deco {
+      position: fixed; pointer-events: none; opacity: 0.08; z-index: 0;
+      font-size: 20rem; line-height: 1;
+    }
+    .leaf-deco.tl { top: -3rem; left: -3rem; transform: rotate(-20deg); }
+    .leaf-deco.br { bottom: -3rem; right: -3rem; transform: rotate(160deg); }
+
+    /* Nav */
+    .nav {
+      position: sticky; top: 0; z-index: 50;
+      background: rgba(245, 241, 232, 0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--line);
+    }
+    .nav-inner {
+      max-width: 1280px; margin: 0 auto;
+      padding: 1.2rem 2rem;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .logo {
+      display: flex; align-items: center; gap: 0.7rem;
+      font-size: 1.2rem; font-weight: 600; color: var(--sage-deep);
+    }
+    .logo-leaf {
+      width: 32px; height: 32px;
+      display: flex; align-items: center; justify-content: center;
+      background: var(--sage); color: var(--paper);
+      border-radius: 50%; font-size: 1.1rem;
+    }
+    .nav-links { display: flex; gap: 2.5rem; font-size: 0.95rem; color: var(--ink-soft); }
+    .nav-links a:hover { color: var(--sage-deep); }
+    .nav-right { display: flex; align-items: center; gap: 1rem; }
+    .lang-switch {
+      display: flex; background: var(--paper);
+      border: 1px solid var(--line); border-radius: 999px; padding: 3px;
+    }
+    .lang-btn {
+      padding: 0.4rem 0.9rem; border: none; background: transparent;
+      cursor: pointer; font-family: inherit; color: var(--ink-soft);
+      border-radius: 999px; font-size: 0.85rem; transition: all 0.25s;
+    }
+    .lang-btn.active { background: var(--sage); color: var(--paper); }
+    .nav-cta {
+      padding: 0.65rem 1.4rem; background: var(--sage-deep); color: var(--paper);
+      border-radius: 999px; font-size: 0.9rem; transition: all 0.25s;
+    }
+    .nav-cta:hover { background: var(--terracotta); }
+    @media (max-width: 768px) { .nav-links { display: none; } }
+
+    /* Hero */
+    .hero {
+      position: relative;
+      padding: 5rem 2rem;
+      max-width: 1280px; margin: 0 auto;
+      display: grid; grid-template-columns: 1.1fr 1fr;
+      gap: 4rem; align-items: center;
+    }
+    @media (max-width: 900px) { .hero { grid-template-columns: 1fr; padding: 3rem 1.5rem; } }
+    .hero-tag {
+      display: inline-flex; align-items: center; gap: 0.6rem;
+      padding: 0.4rem 1rem;
+      background: var(--paper); border: 1px solid var(--line);
+      border-radius: 999px; font-size: 0.85rem;
+      color: var(--sage-deep); margin-bottom: 1.5rem;
+    }
+    .hero-tag::before { content: '🌿'; }
+    .hero h1 {
+      font-size: clamp(2.5rem, 5.5vw, 4.5rem);
+      font-weight: 600; line-height: 1.2;
+      letter-spacing: -0.01em; margin-bottom: 1.5rem;
+      color: var(--ink);
+    }
+    .hero h1 em {
+      font-style: normal; color: var(--sage-deep);
+      position: relative;
+      display: inline-block;
+    }
+    .hero h1 em::before {
+      content: '✿'; position: absolute;
+      top: -0.3em; right: -0.6em;
+      font-size: 0.5em; color: var(--terracotta);
+    }
+    .hero-sub {
+      font-size: 1.15rem; color: var(--ink-soft);
+      margin-bottom: 2.5rem; max-width: 480px;
+    }
+    .hero-cta { display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; }
+    .btn {
+      padding: 1rem 2rem; border-radius: 999px;
+      font-size: 1rem; cursor: pointer;
+      transition: all 0.3s; font-family: inherit;
+      border: none; display: inline-flex; align-items: center; gap: 0.5rem;
+    }
+    .btn-primary {
+      background: var(--sage-deep); color: var(--paper);
+      box-shadow: 0 4px 20px rgba(94, 111, 81, 0.25);
+    }
+    .btn-primary:hover { background: var(--terracotta); transform: translateY(-2px); }
+    .btn-text {
+      background: transparent; color: var(--sage-deep);
+      padding: 1rem 0;
+    }
+    .btn-text:hover { color: var(--terracotta); }
+
+    /* Hero illustration */
+    .hero-art {
+      position: relative;
+      aspect-ratio: 1; max-width: 500px;
+      margin: 0 auto;
+    }
+    .hero-circle {
+      width: 100%; height: 100%; border-radius: 50%;
+      background: linear-gradient(135deg, var(--sage), var(--sage-deep));
+      position: relative; overflow: hidden;
+      box-shadow: 0 20px 60px rgba(94, 111, 81, 0.2);
+    }
+    .hero-circle::before {
+      content: '🌿'; position: absolute;
+      font-size: 12rem; left: 50%; top: 50%;
+      transform: translate(-50%, -50%);
+      filter: brightness(0) saturate(100%) invert(98%) sepia(7%) saturate(285%) hue-rotate(7deg) brightness(102%) contrast(95%);
+      opacity: 0.85;
+    }
+    .hero-blob-1, .hero-blob-2 {
+      position: absolute; border-radius: 50%;
+    }
+    .hero-blob-1 {
+      width: 100px; height: 100px;
+      background: var(--terracotta);
+      top: -2rem; right: 1rem;
+      box-shadow: 0 8px 30px rgba(192, 136, 104, 0.4);
+    }
+    .hero-blob-2 {
+      width: 70px; height: 70px;
+      background: var(--paper);
+      bottom: 1rem; left: -1rem;
+      border: 4px solid var(--sage);
+    }
+    .hero-stats {
+      position: absolute; bottom: -1rem; right: -1rem;
+      background: var(--paper); padding: 1.2rem 1.6rem;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(94, 111, 81, 0.15);
+    }
+    .stat-num { font-size: 1.8rem; font-weight: 700; color: var(--sage-deep); }
+    .stat-label { font-size: 0.85rem; color: var(--ink-soft); }
+
+    /* Features */
+    .features {
+      max-width: 1280px; margin: 4rem auto;
+      padding: 3rem 2rem;
+      background: var(--paper); border-radius: 30px;
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 2rem;
+    }
+    .feature-item { text-align: center; }
+    .feature-icon {
+      width: 56px; height: 56px;
+      margin: 0 auto 1rem;
+      background: var(--bg-2); border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.5rem;
+    }
+    .feature-title { font-weight: 600; margin-bottom: 0.4rem; }
+    .feature-desc { font-size: 0.9rem; color: var(--ink-soft); }
+
+    /* Sections */
+    section { padding: 5rem 2rem; }
+    .container { max-width: 1280px; margin: 0 auto; }
+    .section-head {
+      text-align: center; margin-bottom: 3.5rem;
+    }
+    .section-eyebrow {
+      display: inline-block;
+      padding: 0.3rem 0.9rem;
+      background: var(--bg-2); border-radius: 999px;
+      color: var(--sage-deep); font-size: 0.8rem;
+      letter-spacing: 0.15em; margin-bottom: 1rem;
+    }
+    .section-title {
+      font-size: clamp(2rem, 4vw, 2.8rem);
+      font-weight: 700; margin-bottom: 0.8rem;
+    }
+    .section-title em { font-style: normal; color: var(--sage-deep); }
+    .section-desc { color: var(--ink-soft); max-width: 580px; margin: 0 auto; }
+
+    /* Services */
+    .service-grid {
+      display: grid; gap: 1.5rem;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    }
+    .service-card {
+      background: var(--paper); border-radius: 24px;
+      padding: 2rem; transition: all 0.3s;
+      border: 1px solid var(--line);
+      position: relative; overflow: hidden;
+    }
+    .service-card::before {
+      content: ''; position: absolute;
+      top: -50px; right: -50px;
+      width: 120px; height: 120px;
+      border-radius: 50%; background: var(--bg-2);
+      transition: transform 0.4s;
+    }
+    .service-card:hover { transform: translateY(-6px); box-shadow: 0 20px 40px rgba(94, 111, 81, 0.1); }
+    .service-card:hover::before { transform: scale(1.4); background: rgba(192, 136, 104, 0.15); }
+    .service-icon {
+      width: 60px; height: 60px;
+      background: var(--bg-2); border-radius: 18px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.6rem; margin-bottom: 1.2rem;
+      position: relative; z-index: 1;
+    }
+    .service-card h3 { font-size: 1.3rem; margin-bottom: 0.6rem; position: relative; z-index: 1; }
+    .service-card p { color: var(--ink-soft); font-size: 0.95rem; margin-bottom: 1.5rem; position: relative; z-index: 1; }
+    .service-meta {
+      display: flex; justify-content: space-between; align-items: center;
+      padding-top: 1.2rem; border-top: 1px solid var(--line);
+      position: relative; z-index: 1;
+    }
+    .service-price {
+      background: var(--sage-deep); color: var(--paper);
+      padding: 0.3rem 0.8rem; border-radius: 999px;
+      font-size: 0.85rem;
+    }
+    .service-duration { font-size: 0.85rem; color: var(--ink-soft); }
+
+    /* Products */
+    .products-section { background: var(--bg-2); border-radius: 40px 40px 0 0; }
+    .product-grid {
+      display: grid; gap: 1.5rem;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    }
+    .product-card {
+      background: var(--paper); border-radius: 24px;
+      overflow: hidden; transition: all 0.3s;
+    }
+    .product-card:hover { transform: translateY(-4px); box-shadow: 0 16px 32px rgba(94, 111, 81, 0.12); }
+    .product-img {
+      aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
+      font-size: 4rem; position: relative;
+    }
+    .product-img.c1 { background: linear-gradient(135deg, #d4dcc1, #8a9a7b); }
+    .product-img.c2 { background: linear-gradient(135deg, #f0d4bc, #c08868); }
+    .product-img.c3 { background: linear-gradient(135deg, #e8e1cf, #b5a87f); }
+    .product-img.c4 { background: linear-gradient(135deg, #d8d2bf, #a89c7d); }
+    .product-badge {
+      position: absolute; top: 1rem; left: 1rem;
+      background: var(--paper); padding: 0.3rem 0.8rem;
+      border-radius: 999px; font-size: 0.75rem; color: var(--sage-deep);
+      font-weight: 600;
+    }
+    .product-fav {
+      position: absolute; top: 1rem; right: 1rem;
+      width: 36px; height: 36px; border-radius: 50%;
+      background: var(--paper); border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.25s;
+    }
+    .product-fav:hover { background: var(--terracotta); color: var(--paper); }
+    .product-info { padding: 1.4rem; }
+    .product-cat { font-size: 0.75rem; color: var(--terracotta); font-weight: 600; letter-spacing: 0.1em; margin-bottom: 0.3rem; }
+    .product-name { font-size: 1.05rem; margin-bottom: 0.8rem; font-weight: 600; }
+    .product-bottom { display: flex; justify-content: space-between; align-items: center; }
+    .product-price { font-size: 1.05rem; font-weight: 700; color: var(--sage-deep); }
+    .product-add {
+      padding: 0.5rem 1rem; background: var(--ink); color: var(--paper);
+      border: none; border-radius: 999px; font-size: 0.85rem; cursor: pointer;
+      transition: all 0.25s;
+    }
+    .product-add:hover { background: var(--terracotta); }
+
+    /* CTA */
+    .cta-section { padding: 0 2rem 5rem; }
+    .cta-card {
+      max-width: 1100px; margin: 0 auto;
+      background: linear-gradient(135deg, var(--sage-deep), #4a5a3f);
+      border-radius: 40px;
+      padding: 5rem 3rem; color: var(--paper);
+      text-align: center; position: relative; overflow: hidden;
+    }
+    .cta-card::before, .cta-card::after {
+      content: '🌿'; position: absolute;
+      font-size: 8rem; opacity: 0.1;
+    }
+    .cta-card::before { top: -2rem; left: -2rem; transform: rotate(-30deg); }
+    .cta-card::after { bottom: -2rem; right: -2rem; transform: rotate(150deg); }
+    .cta-card h2 {
+      font-size: clamp(2rem, 4vw, 2.8rem);
+      font-weight: 700; margin-bottom: 1rem; position: relative;
+    }
+    .cta-card p { color: rgba(253, 251, 245, 0.85); margin-bottom: 2.5rem; max-width: 500px; margin-left: auto; margin-right: auto; position: relative; }
+    .cta-card .btn-primary { background: var(--terracotta); position: relative; }
+    .cta-card .btn-primary:hover { background: var(--paper); color: var(--sage-deep); }
+
+    /* Footer */
+    footer { padding: 3rem 2rem 2rem; background: var(--paper); }
+    .footer-inner {
+      max-width: 1280px; margin: 0 auto;
+      display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 2rem;
+    }
+    @media (max-width: 768px) { .footer-inner { grid-template-columns: 1fr 1fr; } }
+    .footer-col h4 {
+      font-size: 0.95rem; margin-bottom: 1rem;
+      color: var(--sage-deep); font-weight: 700;
+    }
+    .footer-col p, .footer-col a {
+      display: block; color: var(--ink-soft);
+      font-size: 0.9rem; margin-bottom: 0.5rem;
+    }
+    .footer-col a:hover { color: var(--terracotta); }
+    .footer-bottom {
+      max-width: 1280px; margin: 2.5rem auto 0;
+      padding-top: 1.5rem; border-top: 1px solid var(--line);
+      text-align: center; font-size: 0.85rem; color: var(--ink-soft);
+    }
+  </style>
+</head>
+<body>
+
+  <span class="leaf-deco tl">🌿</span>
+  <span class="leaf-deco br">🌿</span>
+
+  <nav class="nav">
+    <div class="nav-inner">
+      <div class="logo">
+        <span class="logo-leaf">🌱</span>
+        <span data-i18n="brand">草木之間</span>
+      </div>
+      <div class="nav-links">
+        <a href="#services" data-i18n="nav.services">療癒服務</a>
+        <a href="#products" data-i18n="nav.products">天然選物</a>
+        <a href="#cta" data-i18n="nav.contact">聯絡我們</a>
+      </div>
+      <div class="nav-right">
+        <div class="lang-switch">
+          <button class="lang-btn active" data-lang="zh">中文</button>
+          <button class="lang-btn" data-lang="es">ES</button>
+        </div>
+        <a href="#cta" class="nav-cta" data-i18n="nav.cta">預約 →</a>
+      </div>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div>
+      <span class="hero-tag" data-i18n="hero.tag">天然療癒・身心平衡</span>
+      <h1 data-i18n-html="hero.title">在草木之間，<br>找回<em>原本的你</em></h1>
+      <p class="hero-sub" data-i18n="hero.sub">用大地的禮物照顧自己。從芳療、植物精華到自然療癒，每一刻都讓你更靠近平靜。</p>
+      <div class="hero-cta">
+        <a href="#services" class="btn btn-primary" data-i18n="hero.cta1">預約療程 →</a>
+        <a href="#products" class="btn btn-text" data-i18n="hero.cta2">看看選物</a>
+      </div>
+    </div>
+    <div class="hero-art">
+      <div class="hero-circle"></div>
+      <div class="hero-blob-1"></div>
+      <div class="hero-blob-2"></div>
+      <div class="hero-stats">
+        <div class="stat-num">2,800+</div>
+        <div class="stat-label" data-i18n="hero.stat">滿意客戶</div>
+      </div>
+    </div>
+  </header>
+
+  <div class="features">
+    <div class="feature-item">
+      <div class="feature-icon">🌱</div>
+      <div class="feature-title" data-i18n="f1.title">100% 天然</div>
+      <div class="feature-desc" data-i18n="f1.desc">嚴選有機植物</div>
+    </div>
+    <div class="feature-item">
+      <div class="feature-icon">🐰</div>
+      <div class="feature-title" data-i18n="f2.title">無動物實驗</div>
+      <div class="feature-desc" data-i18n="f2.desc">愛護所有生命</div>
+    </div>
+    <div class="feature-item">
+      <div class="feature-icon">♻️</div>
+      <div class="feature-title" data-i18n="f3.title">永續包裝</div>
+      <div class="feature-desc" data-i18n="f3.desc">減少地球負擔</div>
+    </div>
+    <div class="feature-item">
+      <div class="feature-icon">✨</div>
+      <div class="feature-title" data-i18n="f4.title">專業認證</div>
+      <div class="feature-desc" data-i18n="f4.desc">合格療癒師團隊</div>
+    </div>
+  </div>
+
+  <section id="services">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-eyebrow">SERVICES</div>
+        <h2 class="section-title" data-i18n-html="services.title">與大地相連的<em>療癒方式</em></h2>
+        <p class="section-desc" data-i18n="services.desc">每一個療程，都是一次與自然重逢的旅程。</p>
+      </div>
+      <div class="service-grid">
+        <div class="service-card">
+          <div class="service-icon">🌿</div>
+          <h3 data-i18n="s1.title">芳香療法</h3>
+          <p data-i18n="s1.desc">以植物精油按摩，喚醒身體深層的記憶與舒緩。</p>
+          <div class="service-meta">
+            <span class="service-price" data-i18n="s1.price">NT$ 2,800</span>
+            <span class="service-duration" data-i18n="s1.dur">⏱ 60 分鐘</span>
+          </div>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">💆</div>
+          <h3 data-i18n="s2.title">花精能量</h3>
+          <p data-i18n="s2.desc">透過花朵的振動頻率，調和情緒與內在能量。</p>
+          <div class="service-meta">
+            <span class="service-price" data-i18n="s2.price">NT$ 2,200</span>
+            <span class="service-duration" data-i18n="s2.dur">⏱ 50 分鐘</span>
+          </div>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">🌸</div>
+          <h3 data-i18n="s3.title">植物 SPA</h3>
+          <p data-i18n="s3.desc">用整棵植物的能量，包覆身體、淨化心靈。</p>
+          <div class="service-meta">
+            <span class="service-price" data-i18n="s3.price">NT$ 3,800</span>
+            <span class="service-duration" data-i18n="s3.dur">⏱ 90 分鐘</span>
+          </div>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">🍵</div>
+          <h3 data-i18n="s4.title">藥草課程</h3>
+          <p data-i18n="s4.desc">學習辨識與運用身邊的藥草，把療癒帶回日常。</p>
+          <div class="service-meta">
+            <span class="service-price" data-i18n="s4.price">NT$ 1,800</span>
+            <span class="service-duration" data-i18n="s4.dur">⏱ 120 分鐘</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="products" class="products-section">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-eyebrow">SHOP</div>
+        <h2 class="section-title" data-i18n-html="products.title">大地的<em>禮物</em></h2>
+        <p class="section-desc" data-i18n="products.desc">純天然手工製作，把療癒延伸到每一天。</p>
+      </div>
+      <div class="product-grid">
+        <div class="product-card">
+          <div class="product-img c1">
+            <span class="product-badge" data-i18n="badgeNew">新品</span>
+            <button class="product-fav" aria-label="favorite">♡</button>
+            🌿
+          </div>
+          <div class="product-info">
+            <div class="product-cat">ESSENTIAL OIL</div>
+            <div class="product-name" data-i18n="p1.name">薰衣草純露</div>
+            <div class="product-bottom">
+              <span class="product-price">NT$ 880</span>
+              <button class="product-add" data-i18n="addToCart">加入</button>
+            </div>
+          </div>
+        </div>
+        <div class="product-card">
+          <div class="product-img c2">
+            <button class="product-fav" aria-label="favorite">♡</button>
+            🕯️
+          </div>
+          <div class="product-info">
+            <div class="product-cat">CANDLE</div>
+            <div class="product-name" data-i18n="p2.name">大豆植萃蠟燭</div>
+            <div class="product-bottom">
+              <span class="product-price">NT$ 1,180</span>
+              <button class="product-add" data-i18n="addToCart">加入</button>
+            </div>
+          </div>
+        </div>
+        <div class="product-card">
+          <div class="product-img c3">
+            <span class="product-badge" data-i18n="badgeHot">熱賣</span>
+            <button class="product-fav" aria-label="favorite">♡</button>
+            🍵
+          </div>
+          <div class="product-info">
+            <div class="product-cat">HERBAL TEA</div>
+            <div class="product-name" data-i18n="p3.name">舒眠花草茶</div>
+            <div class="product-bottom">
+              <span class="product-price">NT$ 580</span>
+              <button class="product-add" data-i18n="addToCart">加入</button>
+            </div>
+          </div>
+        </div>
+        <div class="product-card">
+          <div class="product-img c4">
+            <button class="product-fav" aria-label="favorite">♡</button>
+            🧴
+          </div>
+          <div class="product-info">
+            <div class="product-cat">SKINCARE</div>
+            <div class="product-name" data-i18n="p4.name">植萃面部精油</div>
+            <div class="product-bottom">
+              <span class="product-price">NT$ 1,680</span>
+              <button class="product-add" data-i18n="addToCart">加入</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-section" id="cta">
+    <div class="cta-card">
+      <h2 data-i18n="cta.title">回到大地，回到自己 🌿</h2>
+      <p data-i18n="cta.desc">首次預約 9 折，並贈送植物精油試用組</p>
+      <a href="#" class="btn btn-primary" data-i18n="cta.btn">立即預約我的療程 →</a>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-col">
+        <div class="logo" style="margin-bottom: 1rem;">
+          <span class="logo-leaf">🌱</span>
+          <span data-i18n="brand">草木之間</span>
+        </div>
+        <p data-i18n="footer.tagline">用大地的智慧，<br>陪你回到自己。</p>
+      </div>
+      <div class="footer-col">
+        <h4 data-i18n="footer.colServices">服務</h4>
+        <a href="#" data-i18n="s1.title">芳香療法</a>
+        <a href="#" data-i18n="s2.title">花精能量</a>
+        <a href="#" data-i18n="s3.title">植物 SPA</a>
+        <a href="#" data-i18n="s4.title">藥草課程</a>
+      </div>
+      <div class="footer-col">
+        <h4 data-i18n="footer.colShop">商店</h4>
+        <a href="#" data-i18n="footer.cat1">純露</a>
+        <a href="#" data-i18n="footer.cat2">蠟燭</a>
+        <a href="#" data-i18n="footer.cat3">花草茶</a>
+        <a href="#" data-i18n="footer.cat4">保養品</a>
+      </div>
+      <div class="footer-col">
+        <h4 data-i18n="footer.colContact">聯絡</h4>
+        <a href="mailto:hello@botanical.tw">hello@botanical.tw</a>
+        <a href="#">@botanical.tw</a>
+        <p data-i18n="footer.location">台北市・大安區</p>
+      </div>
+    </div>
+    <div class="footer-bottom" data-i18n="footer.copy">© 2026 草木之間 Botanical · All rights reserved.</div>
+  </footer>
+
+  <script>
+    const i18n = {
+      zh: {
+        brand: "草木之間",
+        "nav.services": "療癒服務", "nav.products": "天然選物", "nav.contact": "聯絡我們", "nav.cta": "預約 →",
+        "hero.tag": "天然療癒・身心平衡",
+        "hero.title": "在草木之間，<br>找回<em>原本的你</em>",
+        "hero.sub": "用大地的禮物照顧自己。從芳療、植物精華到自然療癒，每一刻都讓你更靠近平靜。",
+        "hero.cta1": "預約療程 →", "hero.cta2": "看看選物",
+        "hero.stat": "滿意客戶",
+        "f1.title": "100% 天然", "f1.desc": "嚴選有機植物",
+        "f2.title": "無動物實驗", "f2.desc": "愛護所有生命",
+        "f3.title": "永續包裝", "f3.desc": "減少地球負擔",
+        "f4.title": "專業認證", "f4.desc": "合格療癒師團隊",
+        "services.title": "與大地相連的<em>療癒方式</em>",
+        "services.desc": "每一個療程，都是一次與自然重逢的旅程。",
+        "s1.title": "芳香療法", "s1.desc": "以植物精油按摩，喚醒身體深層的記憶與舒緩。", "s1.price": "NT$ 2,800", "s1.dur": "⏱ 60 分鐘",
+        "s2.title": "花精能量", "s2.desc": "透過花朵的振動頻率，調和情緒與內在能量。", "s2.price": "NT$ 2,200", "s2.dur": "⏱ 50 分鐘",
+        "s3.title": "植物 SPA", "s3.desc": "用整棵植物的能量，包覆身體、淨化心靈。", "s3.price": "NT$ 3,800", "s3.dur": "⏱ 90 分鐘",
+        "s4.title": "藥草課程", "s4.desc": "學習辨識與運用身邊的藥草，把療癒帶回日常。", "s4.price": "NT$ 1,800", "s4.dur": "⏱ 120 分鐘",
+        "products.title": "大地的<em>禮物</em>",
+        "products.desc": "純天然手工製作，把療癒延伸到每一天。",
+        "badgeNew": "新品", "badgeHot": "熱賣", "addToCart": "加入",
+        "p1.name": "薰衣草純露", "p2.name": "大豆植萃蠟燭", "p3.name": "舒眠花草茶", "p4.name": "植萃面部精油",
+        "cta.title": "回到大地，回到自己 🌿",
+        "cta.desc": "首次預約 9 折，並贈送植物精油試用組",
+        "cta.btn": "立即預約我的療程 →",
+        "footer.tagline": "用大地的智慧，<br>陪你回到自己。",
+        "footer.colServices": "服務", "footer.colShop": "商店", "footer.colContact": "聯絡",
+        "footer.cat1": "純露", "footer.cat2": "蠟燭", "footer.cat3": "花草茶", "footer.cat4": "保養品",
+        "footer.location": "台北市・大安區",
+        "footer.copy": "© 2026 草木之間 Botanical · 版權所有"
+      },
+      es: {
+        brand: "Entre Hierbas",
+        "nav.services": "Servicios", "nav.products": "Tienda natural", "nav.contact": "Contacto", "nav.cta": "Reservar →",
+        "hero.tag": "Sanación natural · Equilibrio integral",
+        "hero.title": "Entre hierbas,<br>reencuentra <em>tu esencia</em>",
+        "hero.sub": "Cuídate con los regalos de la tierra. Desde aromaterapia hasta fitoterapia, cada momento te acerca un poco más a la calma.",
+        "hero.cta1": "Reservar sesión →", "hero.cta2": "Explorar tienda",
+        "hero.stat": "Clientes felices",
+        "f1.title": "100% Natural", "f1.desc": "Plantas orgánicas",
+        "f2.title": "Cruelty-free", "f2.desc": "Respeto por la vida",
+        "f3.title": "Packaging eco", "f3.desc": "Cuidamos el planeta",
+        "f4.title": "Certificación", "f4.desc": "Equipo profesional",
+        "services.title": "Sanación <em>conectada a la tierra</em>",
+        "services.desc": "Cada sesión es un reencuentro con la naturaleza.",
+        "s1.title": "Aromaterapia", "s1.desc": "Masaje con aceites esenciales para despertar la memoria del cuerpo y aliviar tensiones.", "s1.price": "Desde 95 €", "s1.dur": "⏱ 60 min",
+        "s2.title": "Esencias florales", "s2.desc": "La vibración de las flores armoniza emociones y energía interior.", "s2.price": "Desde 75 €", "s2.dur": "⏱ 50 min",
+        "s3.title": "SPA botánico", "s3.desc": "Envuelve tu cuerpo con la energía vegetal y purifica tu espíritu.", "s3.price": "Desde 130 €", "s3.dur": "⏱ 90 min",
+        "s4.title": "Taller de hierbas", "s4.desc": "Aprende a identificar y usar las plantas a tu alrededor para sanarte cada día.", "s4.price": "Desde 60 €", "s4.dur": "⏱ 120 min",
+        "products.title": "Regalos de la <em>tierra</em>",
+        "products.desc": "Hechos a mano con ingredientes 100 % naturales — para llevar la sanación a tu día a día.",
+        "badgeNew": "Nuevo", "badgeHot": "Top", "addToCart": "Añadir",
+        "p1.name": "Hidrolato de lavanda", "p2.name": "Vela botánica de soja", "p3.name": "Infusión para dormir", "p4.name": "Aceite facial botánico",
+        "cta.title": "Vuelve a la tierra, vuelve a ti 🌿",
+        "cta.desc": "10 % en tu primera cita y un set de aceites esenciales de regalo.",
+        "cta.btn": "Reservar mi sesión →",
+        "footer.tagline": "Con la sabiduría de la tierra,<br>de vuelta a ti misma.",
+        "footer.colServices": "Servicios", "footer.colShop": "Tienda", "footer.colContact": "Contacto",
+        "footer.cat1": "Hidrolatos", "footer.cat2": "Velas", "footer.cat3": "Infusiones", "footer.cat4": "Cosmética",
+        "footer.location": "Madrid · Centro",
+        "footer.copy": "© 2026 Entre Hierbas Botanical · Todos los derechos reservados"
+      }
+    };
+    function applyLang(lang) {
+      const dict = i18n[lang]; if (!dict) return;
+      document.documentElement.lang = lang === "zh" ? "zh-Hant" : "es";
+      document.querySelectorAll("[data-i18n]").forEach(el => { const k = el.getAttribute("data-i18n"); if (dict[k] !== undefined) el.textContent = dict[k]; });
+      document.querySelectorAll("[data-i18n-html]").forEach(el => { const k = el.getAttribute("data-i18n-html"); if (dict[k] !== undefined) el.innerHTML = dict[k]; });
+      document.querySelectorAll(".lang-btn").forEach(b => b.classList.toggle("active", b.dataset.lang === lang));
+      try { localStorage.setItem("preferredLang", lang); } catch (e) {}
+    }
+    document.querySelectorAll(".lang-btn").forEach(b => b.addEventListener("click", () => applyLang(b.dataset.lang)));
+    let saved; try { saved = localStorage.getItem("preferredLang"); } catch (e) {}
+    applyLang(saved || ((navigator.language || "").toLowerCase().startsWith("es") ? "es" : "zh"));
+  </script>
+</body>
+</html>

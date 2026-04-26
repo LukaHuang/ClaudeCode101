@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>綠食日常 ・ 從一餐開始改變身體</title>
+  <meta name="description" content="專為現代人設計的健康飲食方案，新鮮、低負擔、好滋味。">
+  <style>
+    :root {
+      --green-900: #1f3d2b;
+      --green-700: #2f6b3f;
+      --green-500: #4a9d5f;
+      --green-300: #a7d8b0;
+      --green-50:  #eef7ef;
+      --cream:     #faf7f0;
+      --sand:      #f3ead7;
+      --orange:    #e8754a;
+      --text:      #2a2a2a;
+      --muted:     #6b6b6b;
+      --radius:    20px;
+      --shadow:    0 12px 40px rgba(31, 61, 43, 0.08);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+      background: var(--cream);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    img { max-width: 100%; display: block; }
+    a { color: inherit; text-decoration: none; }
+
+    /* Navigation */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(250, 247, 240, 0.85);
+      backdrop-filter: saturate(160%) blur(12px);
+      border-bottom: 1px solid rgba(31, 61, 43, 0.06);
+    }
+    .nav-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .logo {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--green-900);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .logo-mark {
+      width: 32px;
+      height: 32px;
+      background: var(--green-500);
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      font-size: 1.1rem;
+    }
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      font-size: 0.95rem;
+      color: var(--muted);
+    }
+    .nav-links a:hover { color: var(--green-700); }
+    .nav-cta {
+      background: var(--green-700);
+      color: #fff;
+      padding: 0.6rem 1.3rem;
+      border-radius: 999px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: background 0.2s;
+    }
+    .nav-cta:hover { background: var(--green-900); }
+
+    /* Hero */
+    .hero {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 4rem 1.5rem 5rem;
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      gap: 3rem;
+      align-items: center;
+    }
+    .pill {
+      display: inline-block;
+      background: var(--green-50);
+      color: var(--green-700);
+      padding: 0.4rem 1rem;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+    }
+    .hero h1 {
+      font-size: clamp(2.2rem, 5vw, 3.6rem);
+      line-height: 1.15;
+      color: var(--green-900);
+      letter-spacing: -0.02em;
+      margin-bottom: 1.25rem;
+    }
+    .hero h1 em {
+      font-style: normal;
+      color: var(--green-500);
+      position: relative;
+      white-space: nowrap;
+    }
+    .hero h1 em::after {
+      content: "";
+      position: absolute;
+      left: 0; right: 0; bottom: 0.05em;
+      height: 0.35em;
+      background: var(--green-300);
+      opacity: 0.5;
+      border-radius: 2px;
+      z-index: -1;
+    }
+    .hero p {
+      font-size: 1.1rem;
+      color: var(--muted);
+      margin-bottom: 2rem;
+      max-width: 480px;
+    }
+    .hero-actions {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .btn-primary, .btn-ghost {
+      padding: 0.95rem 1.8rem;
+      border-radius: 999px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .btn-primary {
+      background: var(--green-700);
+      color: #fff;
+      box-shadow: 0 8px 20px rgba(47, 107, 63, 0.25);
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      background: var(--green-900);
+    }
+    .btn-ghost {
+      background: transparent;
+      color: var(--green-900);
+      border: 1.5px solid rgba(31, 61, 43, 0.15);
+    }
+    .btn-ghost:hover {
+      background: var(--green-50);
+      border-color: var(--green-300);
+    }
+    .hero-stats {
+      display: flex;
+      gap: 2.5rem;
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(31, 61, 43, 0.08);
+    }
+    .stat-num {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--green-700);
+    }
+    .stat-label {
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    /* Hero visual */
+    .hero-visual {
+      position: relative;
+      aspect-ratio: 1 / 1;
+      max-width: 520px;
+      justify-self: end;
+      width: 100%;
+    }
+    .bowl {
+      position: absolute;
+      inset: 5%;
+      background: radial-gradient(circle at 30% 30%, var(--green-300), var(--green-500) 70%, var(--green-700));
+      border-radius: 50%;
+      box-shadow: var(--shadow), inset -20px -30px 60px rgba(0,0,0,0.15);
+      overflow: hidden;
+    }
+    .bowl::before {
+      content: "🥗";
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      font-size: clamp(6rem, 18vw, 11rem);
+      filter: drop-shadow(0 8px 16px rgba(0,0,0,0.2));
+    }
+    .float-card {
+      position: absolute;
+      background: #fff;
+      padding: 0.85rem 1.1rem;
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+    .float-card .icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      display: grid;
+      place-items: center;
+      font-size: 1.2rem;
+    }
+    .fc-1 { top: 8%; left: -8%; animation: floaty 4s ease-in-out infinite; }
+    .fc-1 .icon { background: #fff3e0; }
+    .fc-2 { bottom: 12%; right: -6%; animation: floaty 4s ease-in-out infinite 1.5s; }
+    .fc-2 .icon { background: var(--green-50); }
+    .fc-3 { bottom: 38%; left: -12%; animation: floaty 4s ease-in-out infinite 0.7s; }
+    .fc-3 .icon { background: #fde6dc; }
+    @keyframes floaty {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    /* Sections */
+    section {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 5rem 1.5rem;
+    }
+    .section-head {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+    .section-head h2 {
+      font-size: clamp(1.8rem, 3.5vw, 2.5rem);
+      color: var(--green-900);
+      margin-bottom: 0.75rem;
+      letter-spacing: -0.01em;
+    }
+    .section-head p {
+      color: var(--muted);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* Features */
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.5rem;
+    }
+    .feature {
+      background: #fff;
+      padding: 2rem 1.75rem;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .feature:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 50px rgba(31, 61, 43, 0.12);
+    }
+    .feature .emoji {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      display: inline-block;
+      background: var(--green-50);
+      width: 56px;
+      height: 56px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+    }
+    .feature h3 {
+      font-size: 1.15rem;
+      color: var(--green-900);
+      margin-bottom: 0.5rem;
+    }
+    .feature p {
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    /* Plans */
+    .plans-wrap {
+      background: var(--green-50);
+      border-radius: 32px;
+      padding: 4rem 2rem;
+    }
+    .plans {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .plan {
+      background: #fff;
+      border-radius: var(--radius);
+      padding: 2.25rem 1.75rem;
+      position: relative;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+    }
+    .plan.featured {
+      background: var(--green-900);
+      color: #fff;
+      transform: scale(1.04);
+    }
+    .plan.featured h3, .plan.featured .price { color: #fff; }
+    .plan.featured ul li { color: rgba(255,255,255,0.85); }
+    .plan-tag {
+      position: absolute;
+      top: -12px;
+      right: 24px;
+      background: var(--orange);
+      color: #fff;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.3rem 0.8rem;
+      border-radius: 999px;
+      letter-spacing: 0.05em;
+    }
+    .plan h3 {
+      font-size: 1.2rem;
+      color: var(--green-900);
+      margin-bottom: 0.5rem;
+    }
+    .plan .desc {
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin-bottom: 1.5rem;
+    }
+    .plan.featured .desc { color: rgba(255,255,255,0.7); }
+    .price {
+      font-size: 2.4rem;
+      font-weight: 800;
+      color: var(--green-900);
+      margin-bottom: 0.25rem;
+    }
+    .price small { font-size: 0.95rem; font-weight: 500; color: var(--muted); }
+    .plan.featured .price small { color: rgba(255,255,255,0.7); }
+    .plan ul {
+      list-style: none;
+      margin: 1.5rem 0 2rem;
+      flex-grow: 1;
+    }
+    .plan ul li {
+      padding: 0.5rem 0;
+      font-size: 0.95rem;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .plan ul li::before {
+      content: "✓";
+      color: var(--green-500);
+      font-weight: 700;
+    }
+    .plan.featured ul li::before { color: var(--green-300); }
+    .plan-btn {
+      width: 100%;
+      padding: 0.85rem;
+      border-radius: 999px;
+      border: none;
+      font-weight: 600;
+      cursor: pointer;
+      background: var(--green-700);
+      color: #fff;
+      transition: background 0.2s;
+      font-size: 0.95rem;
+    }
+    .plan-btn:hover { background: var(--green-900); }
+    .plan.featured .plan-btn {
+      background: var(--orange);
+    }
+    .plan.featured .plan-btn:hover { background: #d65c33; }
+
+    /* Testimonials */
+    .testimonials {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+    .quote {
+      background: #fff;
+      padding: 2rem;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      position: relative;
+    }
+    .quote::before {
+      content: "“";
+      position: absolute;
+      top: 0.5rem;
+      left: 1.25rem;
+      font-size: 4rem;
+      color: var(--green-300);
+      line-height: 1;
+      font-family: Georgia, serif;
+    }
+    .quote p {
+      margin-top: 1.5rem;
+      color: var(--text);
+      font-size: 0.98rem;
+      line-height: 1.7;
+    }
+    .quote .who {
+      margin-top: 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--green-300);
+      display: grid;
+      place-items: center;
+      font-weight: 700;
+      color: var(--green-900);
+    }
+    .who-name { font-weight: 600; font-size: 0.95rem; }
+    .who-role { font-size: 0.85rem; color: var(--muted); }
+
+    /* CTA */
+    .cta-band {
+      background: linear-gradient(135deg, var(--green-700), var(--green-900));
+      color: #fff;
+      border-radius: 32px;
+      padding: 4rem 2rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .cta-band::before, .cta-band::after {
+      content: "";
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(167, 216, 176, 0.15);
+    }
+    .cta-band::before {
+      width: 280px; height: 280px;
+      top: -100px; left: -80px;
+    }
+    .cta-band::after {
+      width: 200px; height: 200px;
+      bottom: -80px; right: -60px;
+    }
+    .cta-band > * { position: relative; z-index: 1; }
+    .cta-band h2 {
+      font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+      margin-bottom: 1rem;
+      letter-spacing: -0.01em;
+    }
+    .cta-band p {
+      max-width: 540px;
+      margin: 0 auto 2rem;
+      opacity: 0.9;
+      font-size: 1.05rem;
+    }
+    .cta-band .btn-primary {
+      background: #fff;
+      color: var(--green-900);
+    }
+    .cta-band .btn-primary:hover { background: var(--sand); }
+
+    /* Footer */
+    footer {
+      padding: 3rem 1.5rem 2rem;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.9rem;
+      border-top: 1px solid rgba(31, 61, 43, 0.08);
+      margin-top: 2rem;
+    }
+    .foot-links {
+      display: flex;
+      gap: 1.5rem;
+      justify-content: center;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+    }
+    .foot-links a:hover { color: var(--green-700); }
+
+    /* Mobile */
+    @media (max-width: 860px) {
+      .hero {
+        grid-template-columns: 1fr;
+        padding: 2.5rem 1.5rem 4rem;
+        text-align: center;
+      }
+      .hero p { margin-left: auto; margin-right: auto; }
+      .hero-actions { justify-content: center; }
+      .hero-stats { justify-content: center; }
+      .hero-visual { justify-self: center; max-width: 380px; }
+      .nav-links { display: none; }
+      .plan.featured { transform: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="nav-inner">
+      <div class="logo">
+        <span class="logo-mark">🌱</span>
+        綠食日常
+      </div>
+      <div class="nav-links">
+        <a href="#features">特色</a>
+        <a href="#plans">方案</a>
+        <a href="#stories">分享</a>
+        <a href="#contact">聯絡</a>
+      </div>
+      <a href="#plans" class="nav-cta">立即訂購</a>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="hero-text">
+      <span class="pill">🥬 每日新鮮直送</span>
+      <h1>用一餐的時間，<br>找回<em>輕盈身體</em></h1>
+      <p>嚴選在地友善農法食材，由營養師量身設計每日餐盒。零負擔、好入口，讓健康從每一口開始。</p>
+      <div class="hero-actions">
+        <button class="btn-primary" onclick="document.getElementById('plans').scrollIntoView({behavior:'smooth'})">
+          開始我的飲食計畫 →
+        </button>
+        <button class="btn-ghost" onclick="alert('觀看影片功能即將上線')">
+          ▶ 看看我們怎麼做
+        </button>
+      </div>
+      <div class="hero-stats">
+        <div>
+          <div class="stat-num">12,000+</div>
+          <div class="stat-label">滿意會員</div>
+        </div>
+        <div>
+          <div class="stat-num">4.9★</div>
+          <div class="stat-label">平均評分</div>
+        </div>
+        <div>
+          <div class="stat-num">100%</div>
+          <div class="stat-label">無添加</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-visual" aria-hidden="true">
+      <div class="bowl"></div>
+      <div class="float-card fc-1">
+        <span class="icon">🍅</span>
+        <div>
+          <div>新鮮番茄</div>
+          <div style="font-weight:400;font-size:0.8rem;color:var(--muted)">當日採收</div>
+        </div>
+      </div>
+      <div class="float-card fc-2">
+        <span class="icon">🥑</span>
+        <div>
+          <div>好油脂</div>
+          <div style="font-weight:400;font-size:0.8rem;color:var(--muted)">穩定血糖</div>
+        </div>
+      </div>
+      <div class="float-card fc-3">
+        <span class="icon">🌾</span>
+        <div>
+          <div>無麩質</div>
+          <div style="font-weight:400;font-size:0.8rem;color:var(--muted)">低敏配方</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <section id="features">
+    <div class="section-head">
+      <h2>為什麼選擇綠食日常？</h2>
+      <p>我們相信，健康飲食不該是負擔，而是一種愉悅的日常選擇。</p>
+    </div>
+    <div class="features">
+      <article class="feature">
+        <div class="emoji">🌿</div>
+        <h3>產地直送</h3>
+        <p>與全台 30+ 友善小農合作，從採收到餐桌不超過 24 小時。</p>
+      </article>
+      <article class="feature">
+        <div class="emoji">🧑‍⚕️</div>
+        <h3>營養師設計</h3>
+        <p>每份餐點皆經專業營養師調配，熱量、蛋白質、膳食纖維清楚標示。</p>
+      </article>
+      <article class="feature">
+        <div class="emoji">🍳</div>
+        <h3>10 分鐘上桌</h3>
+        <p>料理包與生機沙拉開封即享，忙碌也能輕鬆吃得健康。</p>
+      </article>
+      <article class="feature">
+        <div class="emoji">♻️</div>
+        <h3>環境友善</h3>
+        <p>使用 100% 可分解包材，每份訂單捐 NT$5 給綠色基金。</p>
+      </article>
+    </div>
+  </section>
+
+  <section id="plans">
+    <div class="plans-wrap">
+      <div class="section-head">
+        <h2>選擇適合你的方案</h2>
+        <p>無論是想入門體驗，還是長期經營體態，我們都有為你準備的選擇。</p>
+      </div>
+      <div class="plans">
+        <article class="plan">
+          <h3>嚐鮮體驗</h3>
+          <p class="desc">第一次接觸的最佳選擇</p>
+          <div class="price">NT$ 690 <small>/ 3 餐</small></div>
+          <ul>
+            <li>3 份營養師餐盒</li>
+            <li>免運直送到家</li>
+            <li>飲食諮詢 1 次</li>
+          </ul>
+          <button class="plan-btn" onclick="alert('已加入購物車')">選擇此方案</button>
+        </article>
+
+        <article class="plan featured">
+          <span class="plan-tag">最受歡迎</span>
+          <h3>每週輕食</h3>
+          <p class="desc">穩定養成健康習慣</p>
+          <div class="price">NT$ 1,890 <small>/ 週 7 餐</small></div>
+          <ul>
+            <li>每週 7 份多元餐盒</li>
+            <li>每日新鮮配送</li>
+            <li>專屬營養師追蹤</li>
+            <li>可隨時暫停或調整</li>
+          </ul>
+          <button class="plan-btn" onclick="alert('已加入購物車')">選擇此方案</button>
+        </article>
+
+        <article class="plan">
+          <h3>全月計畫</h3>
+          <p class="desc">最划算的長期方案</p>
+          <div class="price">NT$ 6,900 <small>/ 月 30 餐</small></div>
+          <ul>
+            <li>每月 30 份精選餐盒</li>
+            <li>自由選擇配送日</li>
+            <li>1 對 1 飲食諮詢</li>
+            <li>獨家會員食譜</li>
+          </ul>
+          <button class="plan-btn" onclick="alert('已加入購物車')">選擇此方案</button>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="stories">
+    <div class="section-head">
+      <h2>會員真實心得</h2>
+      <p>聽聽他們如何透過綠食日常找回身體節奏。</p>
+    </div>
+    <div class="testimonials">
+      <article class="quote">
+        <p>從原本三餐外食到現在每天都期待打開餐盒，三個月下來瘦了 4 公斤，皮膚也變好了。</p>
+        <div class="who">
+          <div class="avatar">林</div>
+          <div>
+            <div class="who-name">林郁庭</div>
+            <div class="who-role">設計師・35 歲</div>
+          </div>
+        </div>
+      </article>
+      <article class="quote">
+        <p>身為健身教練最在意營養標示清楚，綠食的蛋白質含量很穩定，是我推薦給學員的首選。</p>
+        <div class="who">
+          <div class="avatar">陳</div>
+          <div>
+            <div class="who-name">陳俊宏</div>
+            <div class="who-role">健身教練・28 歲</div>
+          </div>
+        </div>
+      </article>
+      <article class="quote">
+        <p>下班後不用再煩惱要吃什麼，配送到家就能直接享用，料理也比想像中美味很多！</p>
+        <div class="who">
+          <div class="avatar">王</div>
+          <div>
+            <div class="who-name">王思婷</div>
+            <div class="who-role">行銷企劃・31 歲</div>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="cta-band">
+      <h2>讓今天，成為改變的第一天</h2>
+      <p>輸入你的電子信箱，我們將寄送 7 日健康飲食指南，並提供新會員 NT$200 折扣碼。</p>
+      <form onsubmit="event.preventDefault(); alert('感謝訂閱！折扣碼將寄送至 ' + this.email.value);" style="display:flex;gap:0.75rem;justify-content:center;flex-wrap:wrap;max-width:480px;margin:0 auto;">
+        <input
+          type="email"
+          name="email"
+          placeholder="your@email.com"
+          required
+          style="flex:1;min-width:220px;padding:0.95rem 1.25rem;border-radius:999px;border:none;font-size:1rem;outline:none;"
+        >
+        <button type="submit" class="btn-primary">免費領取</button>
+      </form>
+    </div>
+  </section>
+
+  <footer>
+    <div class="foot-links">
+      <a href="#">關於我們</a>
+      <a href="#">配送說明</a>
+      <a href="#">營養資訊</a>
+      <a href="#">常見問題</a>
+      <a href="#">隱私權政策</a>
+    </div>
+    <p>© 2026 綠食日常 GreenDaily ・ 用心讓每一餐，都成為對自己的善待。</p>
+  </footer>
+
+</body>
+</html>
