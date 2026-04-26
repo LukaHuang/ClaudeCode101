@@ -3,53 +3,411 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>我的第一個網頁</title>
+  <title>Landing Page 作品目錄 — Claude Code 101</title>
+  <meta name="description" content="使用 Claude Code 製作的 Landing Page 作品集，涵蓋身心靈、健康飲食、加密貨幣等不同產業主題。">
   <style>
+    :root {
+      --bg: #0a0a0a;
+      --bg-2: #141414;
+      --paper: #ffffff;
+      --ink: #ededed;
+      --ink-soft: #888;
+      --ink-faint: #555;
+      --accent: #e8d28e;
+      --line: rgba(255, 255, 255, 0.08);
+    }
     * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
     body {
-      font-family: -apple-system, "PingFang TC", "Microsoft JhengHei", sans-serif;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: #fff;
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang TC", "Microsoft JhengHei", "Inter", sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+
+    /* Header */
+    header {
+      max-width: 1200px; margin: 0 auto;
+      padding: 5rem 2rem 3rem;
+    }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 0.6rem;
+      font-size: 0.85rem; letter-spacing: 0.2em;
+      color: var(--accent); margin-bottom: 1.5rem;
+    }
+    .eyebrow-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 12px var(--accent);
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+
+    h1 {
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      font-weight: 600; letter-spacing: -0.02em;
+      line-height: 1.1; margin-bottom: 1.5rem;
+    }
+    h1 em {
+      font-style: normal;
+      background: linear-gradient(135deg, var(--accent), #d4a85a);
+      -webkit-background-clip: text; background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .lede {
+      font-size: 1.15rem; color: var(--ink-soft);
+      max-width: 620px;
+    }
+    .meta {
+      display: flex; gap: 2rem; flex-wrap: wrap;
+      margin-top: 2rem; padding-top: 2rem;
+      border-top: 1px solid var(--line);
+      font-size: 0.9rem; color: var(--ink-soft);
+    }
+    .meta b { color: var(--ink); font-weight: 600; }
+
+    /* Filters */
+    .filters {
+      max-width: 1200px; margin: 0 auto;
+      padding: 0 2rem 2rem;
+      display: flex; gap: 0.5rem; flex-wrap: wrap;
+    }
+    .filter {
+      padding: 0.5rem 1.1rem; background: transparent;
+      border: 1px solid var(--line); border-radius: 999px;
+      color: var(--ink-soft); cursor: pointer;
+      font-family: inherit; font-size: 0.9rem;
+      transition: all 0.2s;
+    }
+    .filter:hover { color: var(--ink); border-color: rgba(255,255,255,0.2); }
+    .filter.active {
+      background: var(--accent); border-color: var(--accent);
+      color: var(--bg);
+    }
+
+    /* Grid */
+    main {
+      max-width: 1200px; margin: 0 auto;
+      padding: 0 2rem 6rem;
+      display: grid; gap: 1.5rem;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
     }
     .card {
-      background: rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      border-radius: 16px;
-      padding: 3rem 2.5rem;
-      max-width: 480px;
-      width: 90%;
-      text-align: center;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-    }
-    h1 { font-size: 2.2rem; margin-bottom: 1rem; }
-    p { font-size: 1.05rem; line-height: 1.7; margin-bottom: 1.5rem; opacity: 0.9; }
-    button {
-      background: #fff;
-      color: #764ba2;
-      border: none;
-      padding: 0.75rem 2rem;
-      font-size: 1rem;
-      font-weight: 600;
-      border-radius: 999px;
+      background: var(--bg-2); border-radius: 24px;
+      overflow: hidden; transition: all 0.3s ease;
+      border: 1px solid var(--line);
+      display: flex; flex-direction: column;
       cursor: pointer;
-      transition: transform 0.2s, box-shadow 0.2s;
     }
-    button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    .card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(232, 210, 142, 0.3);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
     }
+
+    .preview {
+      aspect-ratio: 16 / 11;
+      position: relative; overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .preview-text {
+      position: relative; z-index: 1;
+      text-align: center; font-weight: 600;
+      letter-spacing: 0.05em;
+    }
+    .preview-text .big { font-size: 2rem; display: block; line-height: 1.2; }
+    .preview-text .small { font-size: 0.75rem; letter-spacing: 0.3em; opacity: 0.7; margin-top: 0.5rem; display: block; }
+
+    .badge {
+      position: absolute; top: 1rem; left: 1rem; z-index: 2;
+      padding: 0.35rem 0.8rem; border-radius: 999px;
+      font-size: 0.72rem; font-weight: 600; letter-spacing: 0.08em;
+      background: rgba(0,0,0,0.5); backdrop-filter: blur(8px);
+      color: var(--ink); border: 1px solid var(--line);
+    }
+    .badge.featured { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+
+    /* Preview themes */
+    .pv-stillness { background: linear-gradient(135deg, #faf7f2, #d4a5a5); color: #8a6d4a; }
+    .pv-mystic {
+      background: radial-gradient(circle at 30% 30%, #1a1230, #0f0a1e);
+      color: #d4af6a;
+    }
+    .pv-mystic::after {
+      content: ''; position: absolute; inset: 0;
+      background-image:
+        radial-gradient(1.5px 1.5px at 20% 30%, rgba(244,236,216,0.7), transparent),
+        radial-gradient(1px 1px at 70% 50%, rgba(212,175,106,0.7), transparent),
+        radial-gradient(2px 2px at 50% 20%, rgba(244,236,216,0.5), transparent),
+        radial-gradient(1px 1px at 85% 75%, rgba(244,236,216,0.5), transparent),
+        radial-gradient(1.5px 1.5px at 30% 80%, rgba(212,175,106,0.6), transparent);
+    }
+    .pv-zen { background: #fafaf7; color: #1a1a1a; }
+    .pv-zen .v { background: #1a1a1a; color: #fafaf7; padding: 0 0.2em; }
+    .pv-zen .stamp { display: inline-block; width: 0.4em; height: 0.4em; background: #c1392b; vertical-align: middle; margin: 0 0.1em; }
+    .pv-botanical { background: linear-gradient(135deg, #f5f1e8, #8a9a7b); color: #3d4035; }
+    .pv-crypto {
+      background: linear-gradient(135deg, #0a0e27, #1a1f4e);
+      color: #fff;
+      position: relative;
+    }
+    .pv-crypto::before {
+      content: ''; position: absolute; inset: 0;
+      background:
+        radial-gradient(circle at 80% 30%, rgba(99, 102, 241, 0.3), transparent 50%),
+        radial-gradient(circle at 20% 80%, rgba(168, 85, 247, 0.3), transparent 50%);
+    }
+    .pv-crypto .preview-text .big {
+      background: linear-gradient(135deg, #818cf8, #c084fc);
+      -webkit-background-clip: text; background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .pv-healthy {
+      background: linear-gradient(135deg, #f4f8e8, #84a063);
+      color: #2d4a1f;
+    }
+    .pv-firstpage {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: #fff;
+    }
+    .pv-gallery {
+      background: linear-gradient(135deg, #2d2a26, #4a443a);
+      color: #e8d28e;
+    }
+    .pv-gallery::before {
+      content: ''; position: absolute; inset: 0;
+      background-image:
+        repeating-linear-gradient(45deg, transparent 0, transparent 24px, rgba(232, 210, 142, 0.04) 24px, rgba(232, 210, 142, 0.04) 25px);
+    }
+
+    .info { padding: 1.6rem 1.8rem 1.8rem; flex: 1; display: flex; flex-direction: column; }
+    .num { font-size: 0.78rem; color: var(--ink-faint); letter-spacing: 0.25em; margin-bottom: 0.6rem; font-family: "Menlo", monospace; }
+    .name {
+      font-size: 1.3rem; font-weight: 600;
+      margin-bottom: 0.5rem; letter-spacing: -0.01em;
+    }
+    .desc {
+      color: var(--ink-soft); font-size: 0.92rem;
+      flex: 1; margin-bottom: 1.2rem;
+    }
+    .tags { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 1.2rem; }
+    .tag {
+      padding: 0.25rem 0.7rem; background: rgba(255,255,255,0.04);
+      border: 1px solid var(--line); border-radius: 999px;
+      font-size: 0.72rem; color: var(--ink-soft);
+    }
+    .footer-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding-top: 1.2rem; border-top: 1px solid var(--line);
+    }
+    .open {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      font-weight: 600; font-size: 0.9rem; color: var(--ink);
+      transition: all 0.25s;
+    }
+    .open .arrow { transition: transform 0.25s; }
+    .card:hover .open { color: var(--accent); }
+    .card:hover .open .arrow { transform: translateX(4px); }
+    .file-name {
+      font-family: "Menlo", monospace; font-size: 0.78rem;
+      color: var(--ink-faint);
+    }
+
+    /* Footer */
+    footer {
+      max-width: 1200px; margin: 0 auto;
+      padding: 3rem 2rem; border-top: 1px solid var(--line);
+      display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem;
+      font-size: 0.85rem; color: var(--ink-soft);
+    }
+    footer a:hover { color: var(--accent); }
   </style>
 </head>
 <body>
-  <main class="card">
-    <h1>哈囉，世界！</h1>
-    <p>歡迎來到我的第一個網頁。這是用 Claude Code 建立的簡單範例，可以從這裡開始你的開發旅程。</p>
-    <button onclick="alert('點擊成功！')">點我試試</button>
+
+  <header>
+    <div class="eyebrow">
+      <span class="eyebrow-dot"></span>
+      LANDING PAGE COLLECTION · 2026
+    </div>
+    <h1>Landing Page<br><em>作品目錄</em></h1>
+    <p class="lede">使用 Claude Code 製作的 Landing Page 集合。涵蓋身心靈、健康飲食、加密貨幣等不同產業主題，每一份都是從零打造的完整視覺與互動。</p>
+    <div class="meta">
+      <span><b>7</b> 份作品</span>
+      <span><b>5</b> 種風格</span>
+      <span><b>2</b> 種語系</span>
+      <span>繁體中文 · Español</span>
+    </div>
+  </header>
+
+  <div class="filters">
+    <button class="filter active" data-filter="all">全部</button>
+    <button class="filter" data-filter="wellness">身心靈</button>
+    <button class="filter" data-filter="food">健康飲食</button>
+    <button class="filter" data-filter="tech">科技金融</button>
+    <button class="filter" data-filter="meta">總覽 / 起點</button>
+  </div>
+
+  <main id="grid">
+
+    <a class="card" href="landing.html" data-cat="wellness">
+      <div class="preview pv-stillness">
+        <span class="badge featured">主推薦</span>
+        <div class="preview-text">
+          <span class="big">靜心之境</span>
+          <span class="small">STILLNESS</span>
+        </div>
+      </div>
+      <div class="info">
+        <div class="num">/ 01 · WELLNESS</div>
+        <div class="name">現代質感版</div>
+        <div class="desc">米白 × 焦糖棕，中性療癒風。完整 7 區結構，含服務、商品、見證、CTA。</div>
+        <div class="tags"><span class="tag">米白</span><span class="tag">中性</span><span class="tag">i18n</span></div>
+        <div class="footer-row">
+          <span class="file-name">landing.html</span>
+          <span class="open">開啟 <span class="arrow">→</span></span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" href="design-1-mystic.html" data-cat="wellness">
+      <div class="preview pv-mystic">
+        <span class="badge">設計 1</span>
+        <div class="preview-text">
+          <span class="big">月光之境</span>
+          <span class="small">MOONHAVEN</span>
+        </div>
+      </div>
+      <div class="info">
+        <div class="num">/ 02 · WELLNESS</div>
+        <div class="name">深夜神秘版</div>
+        <div class="desc">深紫黑 × 金箔，星空動效與月相儀式感，適合占星塔羅靈性課程。</div>
+        <div class="tags"><span class="tag">深色</span><span class="tag">金色</span><span class="tag">神秘</span></div>
+        <div class="footer-row">
+          <span class="file-name">design-1-mystic.html</span>
+          <span class="open">開啟 <span class="arrow">→</span></span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" href="design-2-zen.html" data-cat="wellness">
+      <div class="preview pv-zen">
+        <span class="badge">設計 2</span>
+        <div class="preview-text">
+          <span class="big">心若<span class="v">無相</span><span class="stamp"></span></span>
+          <span class="small">FORMLESS</span>
+        </div>
+      </div>
+      <div class="info">
+        <div class="num">/ 03 · WELLNESS</div>
+        <div class="name">禪意極簡版</div>
+        <div class="desc">純白 × 墨黑 × 朱紅，東方留白美學與書法感，適合精品高端客群。</div>
+        <div class="tags"><span class="tag">極簡</span><span class="tag">東方</span><span class="tag">編輯式</span></div>
+        <div class="footer-row">
+          <span class="file-name">design-2-zen.html</span>
+          <span class="open">開啟 <span class="arrow">→</span></span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" href="design-3-botanical.html" data-cat="wellness">
+      <div class="preview pv-botanical">
+        <span class="badge">設計 3</span>
+        <div class="preview-text">
+          <span class="big">🌿 草木之間</span>
+          <span class="small">BOTANICAL</span>
+        </div>
+      </div>
+      <div class="info">
+        <div class="num">/ 04 · WELLNESS</div>
+        <div class="name">植物自然版</div>
+        <div class="desc">鼠尾草綠 × 米杏 × 陶土橘，圓潤親和的 SPA 風，適合芳療與植萃品牌。</div>
+        <div class="tags"><span class="tag">綠色</span><span class="tag">親和</span><span class="tag">SPA</span></div>
+        <div class="footer-row">
+          <span class="file-name">design-3-botanical.html</span>
+          <span class="open">開啟 <span class="arrow">→</span></span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" href="healthy-eating.html" data-cat="food">
+      <div class="preview pv-healthy">
+        <div class="preview-text">
+          <span class="big">綠食日常</span>
+          <span class="small">HEALTHY EATING</span>
+        </div>
+      </div>
+      <div class="info">
+        <div class="num">/ 05 · FOOD</div>
+        <div class="name">健康飲食</div>
+        <div class="desc">從一餐開始改變身體。蔬食、減糖、輕斷食的入門 Landing Page。</div>
+        <div class="tags"><span class="tag">健康</span><span class="tag">飲食</span><span class="tag">綠色</span></div>
+        <div class="footer-row">
+          <span class="file-name">healthy-eating.html</span>
+          <span class="open">開啟 <span class="arrow">→</span></span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" href="crypto-landing.html" data-cat="tech">
+      <div class="preview pv-crypto">
+        <div class="preview-text">
+          <span class="big">CryptoX</span>
+          <span class="small">NEXT-GEN EXCHANGE</span>
+        </div>
+      </div>
+      <div class="info">
+        <div class="num">/ 06 · FINTECH</div>
+        <div class="name">加密貨幣交易平台</div>
+        <div class="desc">下一代加密貨幣交易所的 Landing Page，深色科技風格與漸層光暈。</div>
+        <div class="tags"><span class="tag">深色</span><span class="tag">科技</span><span class="tag">金融</span></div>
+        <div class="footer-row">
+          <span class="file-name">crypto-landing.html</span>
+          <span class="open">開啟 <span class="arrow">→</span></span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" href="gallery.html" data-cat="meta">
+      <div class="preview pv-gallery">
+        <div class="preview-text">
+          <span class="big">GALLERY</span>
+          <span class="small">DESIGN OVERVIEW</span>
+        </div>
+      </div>
+      <div class="info">
+        <div class="num">/ 07 · OVERVIEW</div>
+        <div class="name">身心靈設計總覽</div>
+        <div class="desc">將 4 個身心靈設計版本並列比較的早期版總覽頁。</div>
+        <div class="tags"><span class="tag">總覽</span><span class="tag">比較</span></div>
+        <div class="footer-row">
+          <span class="file-name">gallery.html</span>
+          <span class="open">開啟 <span class="arrow">→</span></span>
+        </div>
+      </div>
+    </a>
+
   </main>
+
+  <footer>
+    <span>© 2026 Luka Huang · Claude Code 101</span>
+    <span>Built with <a href="https://claude.com/claude-code">Claude Code</a></span>
+  </footer>
+
+  <script>
+    document.querySelectorAll('.filter').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const filter = btn.dataset.filter;
+        document.querySelectorAll('.filter').forEach(b => b.classList.toggle('active', b === btn));
+        document.querySelectorAll('.card').forEach(card => {
+          const show = filter === 'all' || card.dataset.cat === filter;
+          card.style.display = show ? 'flex' : 'none';
+        });
+      });
+    });
+  </script>
+
 </body>
 </html>
